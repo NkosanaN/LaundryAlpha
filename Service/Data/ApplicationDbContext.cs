@@ -15,7 +15,7 @@ namespace Service.Data
         public DbSet<Product> Product { get; set; }
         public DbSet<ProductCategory> ProductCategory { get; set; }
         public DbSet<Debtors> Customer { get; set; }
-        public DbSet<SaleOrderHeader> SaleOrderHeader { get; set; }
-        public DbSet<SaleOrderDetail> SaleOrderDetail { get; set; }
+        public DbSet<OrderHeader> OrderHeader { get; set; }
+        public DbSet<OrderDetail> OrderDetail { get; set; }
     }
 }

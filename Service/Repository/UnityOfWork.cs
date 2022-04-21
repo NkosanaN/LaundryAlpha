@@ -18,8 +18,8 @@ namespace Service.Repository
             Customer = new DebtorsRepository(_db);
             ProductCategory = new ProductCategoryRepository(_db);
             Product = new ProductRepository(_db);
-            SaleOrderHeader = new SaleOrderHeaderRepository(_db);
-            SaleOrderDetail = new SaleOrderDetailRepository(_db);
+            OrderHeader = new OrderHeaderRepository(_db);
+            OrderDetail = new OrderDetailRepository(_db);
         }
 
         public ICompanyRepository Company { get; private set; }
@@ -30,9 +30,9 @@ namespace Service.Repository
 
         public IProductRepository Product { get; private set; }
 
-        public ISaleOrderHeaderRepository SaleOrderHeader { get; private set; }
+        public IOrderHeaderRepository OrderHeader { get; private set; }
 
-        public ISaleOrderDetailRepository SaleOrderDetail { get; private set; }
+        public IOrderDetailRepository OrderDetail { get; private set; }
 
         public void Save()
         {

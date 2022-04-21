@@ -3,16 +3,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SandS.Helpers;
 using Service;
+using Service.Repository.IRepository;
 
 namespace SandS.Controllers
 {
     [Area("Admin")]
     public class LandingPageController : BaseClass
     {
-        private readonly DataHandler _dataHandler;
-        public LandingPageController(DataHandler dataHandler)
+        private readonly IUnityOfWork _unityofwork;
+        public LandingPageController(IUnityOfWork unityofwork)
         {
-            _dataHandler = dataHandler;
+            _unityofwork = unityofwork;
         }
 
         // GET: LandingPageController
@@ -21,9 +22,9 @@ namespace SandS.Controllers
 
             ViewBag.sList = ServicesGet();
 
-            ViewBag.Laundry = _dataHandler.ProductListGet(1);
-            ViewBag.HouseHolds = _dataHandler.ProductListGet(2);
-            ViewBag.Comforters = _dataHandler.ProductListGet(1002);
+            ViewBag.Laundry = _unityofwork.Product.GetFirstOrDefault(x => x.ProductID == 1);
+            ViewBag.HouseHolds = _unityofwork.Product.GetFirstOrDefault(x => x.ProductID == 2);
+            ViewBag.Comforters = _unityofwork.Product.GetFirstOrDefault(x => x.ProductID == 1002);
             ViewBag.sList = ServicesGet();
 
             return View();

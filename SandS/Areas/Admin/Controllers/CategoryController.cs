@@ -43,13 +43,13 @@ namespace SandS.Controllers
             //var model = _dataHandler.SalesHeaderListGet();
             //model ??= new List<SaleOrderHeader>();
 
-            IEnumerable<SaleOrderHeader> obj = _unityofwork.SaleOrderHeader.GetAll();
-            obj ??= new List<SaleOrderHeader>();
+            IEnumerable<OrderHeader> obj = _unityofwork.OrderHeader.GetAll();
+            obj ??= new List<OrderHeader>();
             return View(obj);
 
         }
 
-        public ActionResult SaleOrderDetail(int Id) 
+        public ActionResult OrderDetail(int Id) 
         {
             return View();
             //return View(_unityofwork.SaleOrderDetail.GetFirstOrDefault(x => x.Id == id));
@@ -110,23 +110,23 @@ namespace SandS.Controllers
                 var customer = JsonConvert.DeserializeObject<Debtors>(customerinfo);
                 var products = JsonConvert.DeserializeObject<List<Product>>(selectedlines);
 
-                SaleOrderHeader header = new SaleOrderHeader()
+                OrderHeader header = new OrderHeader()
                 {
                     Name = customer.FirstName,
                     Surname = customer.LastName,
                     Email = customer.Email,
                     ItemNr = products.Count,
                     TotalLine = products.Select(x => x.ListPrice).Sum(),
-                    SaleOrderDetail = new()
+                    //OrderLine = new()
                 };
                 for (int i = 0; i < products.Count; i++)
                 {
-                    header.SaleOrderDetail.Add(new SaleOrderDetail()
-                    {
-                        CountId = i,
-                        Items = products[i].ProductName,
-                        Price = products[i].ListPrice,
-                    });
+                    //header.OrderLine.Add(new OrderDetail()
+                    //{
+                    //    Count = i,
+                    //    Items = products[i].ProductName,
+                    //    Price = products[i].ListPrice,
+                    //});
                 }
                 receipt.customer = customer;
                 receipt.product = products;
@@ -155,14 +155,14 @@ namespace SandS.Controllers
                 var products = JsonConvert.DeserializeObject<List<Product>>(selectedlines);
                 string domain = "https://localhost:44342/";
 
-                SaleOrderHeader header = new SaleOrderHeader()
+                OrderHeader header = new OrderHeader()
                 {
                     Name = customer.FirstName,
                     Surname = customer.LastName,
                     Email = customer.Email,
                     ItemNr = products.Count,
                     TotalLine = products.Select(x => x.ListPrice).Sum(),
-                    SaleOrderDetail = new()
+                    //OrderLine = new()
                 };
                 var options = new SessionCreateOptions
                 {
@@ -172,7 +172,7 @@ namespace SandS.Controllers
                     },
                     LineItems = new List<SessionLineItemOptions>(),
                     Mode = "payment",
-                    SuccessUrl = domain + $"admin/category/orderconfirmation?id={header.SaleOrdHeaderCode}",
+                    SuccessUrl = domain + $"admin/category/orderconfirmation?id={header.OrdHeaderCode}",
                     CancelUrl = domain + "admin/category/index",
                 };
                 for (int i = 0; i < products.Count; i++)
@@ -213,7 +213,7 @@ namespace SandS.Controllers
         public ActionResult OrderConfirmation(int id) 
         {
 
-            var product = _dataHandler.ProductGetSingle(id);
+            var product = _unityofwork.Product.GetFirstOrDefault(x => x.ProductID == id);
             var service = new SessionService();
             Session session = service.Get(product.SessionId);
 

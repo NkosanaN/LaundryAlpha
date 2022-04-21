@@ -17,7 +17,7 @@ namespace Service.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.2")
+                .HasAnnotation("ProductVersion", "6.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -258,64 +258,187 @@ namespace Service.Migrations
                     b.ToTable("Company");
                 });
 
-            modelBuilder.Entity("Model.SaleOrderDetail", b =>
+            modelBuilder.Entity("Model.Debtors", b =>
                 {
-                    b.Property<string>("SaleOrdDetailCode")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Catergory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("MobilePhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StreetAddress1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StreetAddress2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isCollected")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Customer");
+                });
+
+            modelBuilder.Entity("Model.OrderDetail", b =>
+                {
+                    b.Property<string>("OrderDetailCode")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
                     b.Property<string>("Items")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrdHeaderCode")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SaleOrdHeaderCode")
+                    b.Property<string>("OrderHeaderOrdHeaderCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("SaleOrdDetailCode");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
-                    b.HasIndex("SaleOrdHeaderCode");
+                    b.HasKey("OrderDetailCode");
 
-                    b.ToTable("SaleOrderDetail");
+                    b.HasIndex("OrderHeaderOrdHeaderCode");
+
+                    b.ToTable("OrderDetail");
                 });
 
-            modelBuilder.Entity("Model.SaleOrderHeader", b =>
+            modelBuilder.Entity("Model.OrderHeader", b =>
                 {
-                    b.Property<string>("SaleOrdHeaderCode")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<string>("OrdHeaderCode")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ItemNr")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Surname")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TotalLine")
+                    b.Property<double>("TotalLine")
+                        .HasColumnType("float");
+
+                    b.HasKey("OrdHeaderCode");
+
+                    b.ToTable("OrderHeader");
+                });
+
+            modelBuilder.Entity("Model.Product", b =>
+                {
+                    b.Property<int>("ProductID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.HasKey("SaleOrdHeaderCode");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductID"), 1L, 1);
 
-                    b.ToTable("SaleOrderHeader");
+                    b.Property<string>("ImgUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("ListPrice")
+                        .HasColumnType("float");
+
+                    b.Property<string>("PaymentIntentId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductCategoryID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SessionId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProductID");
+
+                    b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("Model.ProductCategory", b =>
+                {
+                    b.Property<int>("ProductCategoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductCategoryID"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProductCategoryID");
+
+                    b.ToTable("ProductCategory");
+                });
+
+            modelBuilder.Entity("Model.ShoppingCart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ShoppingCart");
                 });
 
             modelBuilder.Entity("Model.ApplicationUser", b =>
@@ -398,15 +521,34 @@ namespace Service.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Model.SaleOrderDetail", b =>
+            modelBuilder.Entity("Model.OrderDetail", b =>
                 {
-                    b.HasOne("Model.SaleOrderHeader", "SaleOrderHeader")
-                        .WithMany()
-                        .HasForeignKey("SaleOrdHeaderCode")
+                    b.HasOne("Model.OrderHeader", "OrderHeader")
+                        .WithMany("OrderLine")
+                        .HasForeignKey("OrderHeaderOrdHeaderCode")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("SaleOrderHeader");
+                    b.Navigation("OrderHeader");
+                });
+
+            modelBuilder.Entity("Model.ShoppingCart", b =>
+                {
+                    b.HasOne("Model.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Model.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Model.ApplicationUser", b =>
@@ -418,6 +560,11 @@ namespace Service.Migrations
                         .IsRequired();
 
                     b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("Model.OrderHeader", b =>
+                {
+                    b.Navigation("OrderLine");
                 });
 #pragma warning restore 612, 618
         }

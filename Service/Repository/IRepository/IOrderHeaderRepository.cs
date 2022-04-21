@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Service.Repository.IRepository
 {
-    public interface ISaleOrderDetailRepository : IRepository<SaleOrderDetail>
+    public interface IOrderHeaderRepository : IRepository<OrderHeader>
     {
-        void Update(SaleOrderDetail saleorderdetail);
+        void Update(OrderHeader saleorderheader);
     }
 }

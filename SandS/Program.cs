@@ -55,7 +55,7 @@ builder.Services.AddMvc()
     .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
     .AddDataAnnotationsLocalization();
 
-builder.Services.AddTransient<DataHandler, DataHandler>();
+//builder.Services.AddTransient<DataHandler, DataHandler>();
 builder.Services.AddSingleton<Utils, Utils>();
 
 builder.Services.AddScoped<IUnityOfWork, UnityOfWork>();

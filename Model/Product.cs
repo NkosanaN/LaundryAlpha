@@ -15,7 +15,7 @@ namespace Model
         public string ProductName { get; set; } = string.Empty;
 
         [Display(Name = "Price")]
-        public decimal ListPrice { get; set; }
+        public double ListPrice { get; set; }
         public int ProductCategoryID { get; set; }
         public string ImgUrl { get; set; } = string.Empty;
         public string? SessionId { get; set; }

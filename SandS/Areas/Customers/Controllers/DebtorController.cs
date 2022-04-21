@@ -10,11 +10,9 @@ namespace SandS.Controllers
     [Area("Customer")]
     public class DebtorController : Controller
     {
-        private readonly DataHandler dataHandler;
         private readonly IToastNotification _toastNotification;
-        public DebtorController(DataHandler handler, IToastNotification toastNotification)
+        public DebtorController(IToastNotification toastNotification)
         {
-            dataHandler = handler;
             _toastNotification = toastNotification;
         }
         // GET: CustomerController

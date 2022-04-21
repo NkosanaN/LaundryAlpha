@@ -1,4 +1,4 @@
-﻿@model List<Model.SaleOrderDetail>
+﻿@model List<Model.OrderDetail>
 
 @{
     ViewData["Title"] = "SaleOrderDetail";
@@ -9,7 +9,7 @@
 <table width="38%">
     <thead>
         <tr class="alert-secondary">
-            <th>@Html.DisplayNameFor(m => @Model.FirstOrDefault().CountId)</th>
+            <th>@Html.DisplayNameFor(m => @Model.FirstOrDefault().Count)</th>
             <th>@Html.DisplayNameFor(m => @Model.FirstOrDefault().Items)</th>
             <th>@Html.DisplayNameFor(m => @Model.FirstOrDefault().Price)</th>
         </tr>
@@ -18,7 +18,7 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@Html.DisplayFor(m => item.CountId)</td>
+                <td>@Html.DisplayFor(m => item.Count)</td>
                 <td>@Html.DisplayFor(m => item.Items)</td>
                 <td>@Html.DisplayFor(m => item.Price)</td>
             </tr>

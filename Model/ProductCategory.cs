@@ -11,6 +11,5 @@ namespace Model
         public int ProductCategoryID { get; set; }
         public string Name { get; set; }  = string.Empty;
 
-
     }
 }

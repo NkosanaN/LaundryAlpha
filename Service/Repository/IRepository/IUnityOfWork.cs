@@ -12,8 +12,8 @@ namespace Service.Repository.IRepository
         ICustomerRepository Customer { get; }
         IProductCategoryRepository ProductCategory { get; }
         IProductRepository Product { get; }
-        ISaleOrderHeaderRepository SaleOrderHeader { get; }
-        ISaleOrderDetailRepository SaleOrderDetail { get; }
+        IOrderHeaderRepository OrderHeader { get; }
+        IOrderDetailRepository OrderDetail { get; }
         void Save();
     }
 }

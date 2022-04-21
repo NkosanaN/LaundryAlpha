@@ -1,4 +1,4 @@
-﻿@model List<Model.SaleOrderHeader>
+﻿@model List<Model.OrderHeader>
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Microsoft.Extensions.Localization
 @using Microsoft.Extensions.Options;
@@ -47,7 +47,7 @@
             <tr>
 
                 <td>
-                    @Html.DisplayFor(modelItem => item.SaleOrdHeaderCode)
+                    @Html.DisplayFor(modelItem => item.OrdHeaderCode)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
@@ -59,7 +59,7 @@
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                    <a style="text-decoration: none" asp-action="SaleOrderDetail" asp-route-saleordcode="@item.SaleOrdHeaderCode">@item.ItemNr</a>
+                    <a style="text-decoration: none" asp-action="SaleOrderDetail" asp-route-saleordcode="@item.OrdHeaderCode">@item.ItemNr</a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.TotalLine)
@@ -72,8 +72,8 @@
                             Action
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@item.SaleOrdHeaderCode">Edit</a></li>
-                            <li><a class="dropdown-item" asp-action="Delete" asp-route-id="@item.SaleOrdHeaderCode">Delete</a></li>
+                            <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@item.OrdHeaderCode">Edit</a></li>
+                            <li><a class="dropdown-item" asp-action="Delete" asp-route-id="@item.OrdHeaderCode">Delete</a></li>
                         </ul>
                     </div>
 

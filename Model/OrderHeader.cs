@@ -3,22 +3,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Model
 {
-    public class SaleOrderHeader
+    public class OrderHeader
     {
         [Key]
-        [Display(Name = "Order Code"),StringLength(10)]
-        public string SaleOrdHeaderCode { get; set; }
-        [StringLength(50)]
+        public string OrdHeaderCode { get; set; }
         public string Name { get; set; } = string.Empty;
-        [StringLength(50)]
         public string Surname { get; set; } = string.Empty;
-        [StringLength(50),DataType(DataType.EmailAddress),EmailAddress]
+
+        [DataType(DataType.EmailAddress),EmailAddress]
         public string Email { get; set; } = string.Empty;
         [Display(Name ="Nr of Items")]
         public int ItemNr { get; set; }
 
        [Display(Name = "Total")]
-        public decimal TotalLine { get; set; }
-        public List<SaleOrderDetail> SaleOrderDetail { get; set; }
+        public double TotalLine { get; set; }
+        public List<OrderDetail> OrderLine { get; set; } = new List<OrderDetail>();
     }
 }

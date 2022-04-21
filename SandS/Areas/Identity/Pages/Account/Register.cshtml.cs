@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Model;
 using Service;
+using Service.Repository.IRepository;
 
 namespace SandS.Areas.Identity.Pages.Account
 {
@@ -35,6 +36,8 @@ namespace SandS.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly DataHandler _dataHandler;
+
+        private readonly IUnityOfWork _unityofwork;
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
@@ -42,8 +45,10 @@ namespace SandS.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             RoleManager<IdentityRole> roleManager,
-            DataHandler handler)
+            DataHandler handler,
+            IUnityOfWork unityofwork)
         {
+            _unityofwork = unityofwork;
             _dataHandler = handler;
             _roleManager = roleManager;
             _userManager = userManager;
@@ -149,7 +154,7 @@ namespace SandS.Areas.Identity.Pages.Account
                     Text = i,
                     Value = i
                 }),
-                CompanyList = _dataHandler.CompanyListGet().Select(i => new SelectListItem
+                CompanyList = _unityofwork.Company.GetAll().Select(i => new SelectListItem
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()

@@ -12,14 +12,10 @@ namespace SandS.Areas.Admin.Controllers
     {
         private readonly IUnityOfWork _unityofwork;
 
-        private readonly DataHandler _dataHandler;
-        private readonly IToastNotification _toastNotification;
         //private readonly ILogger _logger;
-        public CompanyController(IUnityOfWork unityofwork,
-            IToastNotification toastNotification /*,IHostingEnvironment hosting,ILogger logger*/)
+        public CompanyController(IUnityOfWork unityofwork/*,IHostingEnvironment hosting,ILogger logger*/)
         {
             _unityofwork = unityofwork;
-            _toastNotification = toastNotification;
             //_logger = logger;
         }
         // GET: CompanyController
@@ -97,48 +93,6 @@ namespace SandS.Areas.Admin.Controllers
                 return View();
             }
             return View(model);
-        }
-
-        // GET: CompanyController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: CompanyController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: CompanyController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: CompanyController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }
