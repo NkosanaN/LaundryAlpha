@@ -1,0 +1,106 @@
+﻿@model List<Model.SaleOrderHeader>
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
+@using Microsoft.Extensions.Options;
+@using S_and_S
+@inject IStringLocalizer<SharedResource> Localizer
+
+
+@{
+    ViewData["Title"] = "Index";
+    ViewData["isExternalUser"] = false;
+}
+<h1>Dash Board</h1>
+<p>
+    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Create
+    </button>
+</p>
+
+<table class="table alert-outline-dark table-striped" id="tbl">
+    <thead>
+        <tr>
+            <th>
+                @Localizer["SaleOrdHeaderCode"].Value
+            </th>
+            <th>
+                @Localizer["Name"].Value
+            </th>
+            <th>
+                @Localizer["Surname"].Value
+            </th>
+            <th>
+                @Localizer["Email"].Value
+            </th>
+            <th>
+                @Localizer["ItemNr"].Value
+            </th>
+            <th>
+                @Localizer["TotalLine"].Value
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.SaleOrdHeaderCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Surname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    <a style="text-decoration: none" asp-action="SaleOrderDetail" asp-route-saleordcode="@item.SaleOrdHeaderCode">@item.ItemNr</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalLine)
+                </td>
+
+                <td>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Action
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@item.SaleOrdHeaderCode">Edit</a></li>
+                            <li><a class="dropdown-item" asp-action="Delete" asp-route-id="@item.SaleOrdHeaderCode">Delete</a></li>
+                        </ul>
+                    </div>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@await Component.InvokeAsync("Test","Admin Create Order")
+
+<partial name="_ModalConfirm" view-data="ViewData" />
+
+
+@section Scripts {
+<script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+<script src="~/js/base.js" type="text/javascript"></script>
+<script src="~/js/admin.js" type="text/javascript"></script>
+<script src="~/js/customer.js" type="text/javascript"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+            $("#tbl").DataTable();
+    });
+</script>
+}

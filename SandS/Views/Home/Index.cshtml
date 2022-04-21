@@ -1,0 +1,262 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    ViewData["isExternalUser"] = true;
+}
+<div class="row">
+    <div id="carouselExampleControls" class="carousel slide " data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="~/img/2.jpg" alt="...">
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>
+
+
+<!--Pricing-->
+<div class="modal fade" id="pricingModel" tabindex="-1" aria-labelledby="pricingModel">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-secondary text-center" id="exampleModalLabel">Our Prices</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <ul class="nav nav-pills nav-justified" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Laundry</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">HouseHolds</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Comforters</button>
+                        </li>
+
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <p></p>
+                            <table class="table table-xs">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Items</th>
+                                        <th scope="col" style='text-align: center'>Prices (Rands)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in (List<Model.Product>)ViewBag.Laundry)
+                                    {
+                                        <tr>
+                                            <td>@item.ProductName</td>
+                                            <td scope="col" style='text-align: center'>@item.ListPrice.ToString("N2")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <p></p>
+                            <table class="table table-xs ">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Items</th>
+                                        <th scope="col" style='text-align: center'>Prices</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in (List<Model.Product>)ViewBag.HouseHolds)
+                                    {
+                                        <tr>
+                                            <td>@item.ProductName</td>
+                                            <td scope="col" style='text-align: center'>@item.ListPrice.ToString("N2")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                            <p></p>
+                            <table class="table table-xs ">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Items</th>
+                                        <th scope="col" style='text-align: center'>Prices</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in (List<Model.Product>)ViewBag.Comforters)
+                                    {
+                                        <tr>
+                                            <td>@item.ProductName</td>
+                                            <td scope="col" style='text-align: center'>@item.ListPrice.ToString("N2")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" 
+tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-secondary text-center" id="exampleModalLabel">Place Order</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="inputName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="inputName">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="Surname" class="form-label">Surname</label>
+                        <input type="text" class="form-control" id="Surname">
+                    </div>
+
+
+                    <div class="col-md-12 mt-2">
+                        <label for="inputEmail4" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="inputEmail">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label">Select Service</label>
+                        <select id="Catergory" class="form-control" asp-items="@(SelectList)ViewBag.sList">
+                            <option disabled selected>-select-</option>
+                        </select>
+                        <span class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="MobilePhoneNumber" class="form-label">Mobile Number</label>
+                        <input type="text" class="form-control" id="MobilePhoneNumber">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="inputAddress" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="inputAddress" placeholder="1234 Mamelodi St">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="inputAddress2" class="form-label">Address 2 (optional)</label>
+                        <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+                    </div>
+
+                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-headingOne">
+                                <button class="accordion-button collapsed alert-primary" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                    Accordion Item #1
+                                </button>
+                            </h2>
+                            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    <table class="table table-hover d-none display" id="tblLaundry">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Add to basket</th>
+                                                <th scope="col">Items</th>
+                                                <th scope="col" style='text-align: center'>Prices (Rands)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in (List<Model.Product>)ViewBag.Laundry)
+                                            {
+                                                <tr>
+                                                    <th scope="row"><input type="checkbox" name="row-check" id="5" style="width:25px;height:20px" /></th>
+                                                    <td>@item.ProductName</td>
+                                                    <td style="text-align: right">@item.ListPrice.ToString("N2")</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="alert-primary text-dark ">
+                                                <th class="col"> Total </th>
+                                                <td class="col"></td>
+                                                <th class="col font-weight-bold" id="totall" style='text-align: right'>0.00</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+
+                                    <table class="table table-hover  d-none display" id="tblBedding">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Add to basket</th>
+                                                <th scope="col">Items</th>
+                                                <th scope="col" style='text-align: center'>Prices (Rands)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in (List<Model.Product>)ViewBag.HouseHolds)
+                                            {
+                                                <tr>
+                                                    <th scope="row"><input type="checkbox" name="row-check" id="6" style="width:25px;height:20px" /></th>
+                                                    <td>@item.ProductName</td>
+                                                    <td style="text-align: right">@item.ListPrice.ToString("N2")</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="alert-primary text-dark">
+                                                <th class="col"> Total </th>
+                                                <td class="col"></td>
+                                                <th class="col font-weight-bold" id="totalb" style='text-align: right'>0.00</th>
+                                            </tr>
+
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        </div>
+                        <div class="modal-footer mt-1">
+	                        <button data-bs-target="#adminModalToggle"
+			                        data-bs-toggle="modal"
+			                        id="adminviewsummary"
+			                        data-bs-dismiss="modal"
+			                        class="btn btn-primary">
+		                        View Summary
+	                        </button>
+                        </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="_ModalConfirm" view-data="ViewData" />
+
+@section Scripts {
+<script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script src="~/js/admin.js" type="text/javascript"></script>
+<script src="~/js/customer.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+         $("#tbl").DataTable();
+    });
+</script>
+}

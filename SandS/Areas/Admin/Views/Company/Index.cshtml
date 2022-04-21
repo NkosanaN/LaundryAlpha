@@ -1,0 +1,94 @@
+﻿@model IEnumerable<Model.Company>
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
+@using Microsoft.Extensions.Options;
+@using S_and_S
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Companies</h1>
+
+<p>
+    <a asp-action="Upsert"  class="btn btn-outline-secondary" >Create New</a>
+</p>
+
+<table class="table alert-outline-dark table-striped" id="tbl">
+    <thead>
+        <tr>
+            <th>
+               @Localizer["Id"].Value
+            </th>
+            <th>
+                @Localizer["Name"].Value
+            </th>
+            <th>
+                @Localizer["StreetAddress"].Value
+            </th>
+            <th>
+                @Localizer["City"].Value
+            </th>
+      @*      <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>*@
+            <th>
+                 @Localizer["PostalCode"].Value
+            </th>
+            <th>
+                @Localizer["PhoneNumber"].Value
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StreetAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+            @*    <td>
+                    @Html.DisplayFor(modelItem => item.State)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.PostalCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+
+                <td>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Action
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-action="Upsert" asp-route-id="@item.Id">Edit</a></li>
+                        </ul>
+                    </div>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+<script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+         $("#tbl").DataTable();
+    });
+</script>
+}
