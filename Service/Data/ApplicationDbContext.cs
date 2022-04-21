@@ -10,8 +10,10 @@ namespace Service.Data
         {
         }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-        //public DbSet<ShoppingCart> ShoppingCart { get; set; }
-        //public DbSet<Customer> Customer { get; set; }
+        public DbSet<ShoppingCart> ShoppingCart { get; set; }
+        public DbSet<Company> Company { get; set; }
+        public DbSet<Product> Product { get; set; }
+        public DbSet<Debtors> Customer { get; set; }
         public DbSet<SaleOrderHeader> SaleOrderHeader { get; set; }
         public DbSet<SaleOrderDetail> SaleOrderDetail { get; set; }
     }

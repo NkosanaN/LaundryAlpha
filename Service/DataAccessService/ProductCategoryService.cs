@@ -10,7 +10,6 @@ namespace Service
             return new ProductCategory
             {
                 ProductCategoryID = (int)row["ProductCategoryID"],
-            
                 Name = row["Name"].ToString(),
             };
         }

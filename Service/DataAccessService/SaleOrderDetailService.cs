@@ -24,14 +24,6 @@ namespace Service
             if (memorycache.TryGetValue(cacheKey, out List<SaleOrderDetail> data))
             {
                 return data;
-
-                //setting cache
-                //var cacheExpiryOpt = new MemoryCacheEntryOptions()
-                //{
-                //    AbsoluteExpiration = DateTime.Now.AddSeconds(50),
-                //    Priority = CacheItemPriority.High,
-                //    SlidingExpiration = TimeSpan.FromSeconds(20)
-                //};
             }
             var salesdetailList = new List<SaleOrderDetail>();
             var dt = Util.Select(sql);
