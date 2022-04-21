@@ -9,6 +9,7 @@ using Rotativa.AspNetCore;
 using SandS.Helpers;
 using SandS.Models;
 using Service;
+using Service.Repository.IRepository;
 using Stripe.Checkout;
 using System.Security.Claims;
 
@@ -19,12 +20,15 @@ namespace SandS.Controllers
     public class CategoryController : BaseClass
     {
         private readonly DataHandler _dataHandler;
+        private readonly IUnityOfWork _unityofwork;
         private readonly IToastNotification _toastNotification;
          // GET: HomeController1
 
-        public CategoryController(DataHandler handler, IToastNotification toastNotification)
+        public CategoryController(DataHandler dataHandler,IUnityOfWork unityofwork,
+            IToastNotification toastNotification)
         {
-            _dataHandler = handler;
+            _dataHandler = dataHandler;
+            _unityofwork = unityofwork;
             _toastNotification = toastNotification;
         }
         public ActionResult Index()
@@ -34,15 +38,21 @@ namespace SandS.Controllers
             //ShoppingCart _shoppingCart = new();
             //_shoppingCart.ApplicationUserId = claim.Value;
 
-          //  ViewData["routeInfo"] = ControllerContext.MyDisplayRouteInfo();
-            var model = _dataHandler.SalesHeaderListGet();
-            model ??= new List<SaleOrderHeader>();
-           return View(model);
+            //  ViewData["routeInfo"] = ControllerContext.MyDisplayRouteInfo();
+
+            //var model = _dataHandler.SalesHeaderListGet();
+            //model ??= new List<SaleOrderHeader>();
+
+            IEnumerable<SaleOrderHeader> obj = _unityofwork.SaleOrderHeader.GetAll();
+            obj ??= new List<SaleOrderHeader>();
+            return View(obj);
+
         }
 
-        public ActionResult SaleOrderDetail(string saleordcode) 
+        public ActionResult SaleOrderDetail(int Id) 
         {
-            return View(_dataHandler.SalesDetailListGet(saleordcode));
+            return View();
+            //return View(_unityofwork.SaleOrderDetail.GetFirstOrDefault(x => x.Id == id));
         }
 
         // GET: HomeController1/Details/5
@@ -52,7 +62,8 @@ namespace SandS.Controllers
             //var claimsIdentity = (ClaimsIdentity)User.Identity;
             //var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             //_shoppingCart.ApplicationUserId = claim.Value;
-            return View(_dataHandler.CustomerGetSingle(id));
+            return View();
+         //   return View(_dataHandler.CustomerGetSingle(id));
         }
 
         // GET: HomeController1/Create
@@ -127,12 +138,6 @@ namespace SandS.Controllers
                     PageSize = Rotativa.AspNetCore.Options.Size.A4
                 };
                 return potrait;
-
-
-                //if (_dataHandler.AddSaleOrderHeader(header)) 
-                //{
-                //    return new ViewAsPdf(receipt);
-                //}
             }
             catch (Exception ex)
             {

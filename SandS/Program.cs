@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Stripe;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Service.Repository.IRepository;
+using Service.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,6 +57,8 @@ builder.Services.AddMvc()
 
 builder.Services.AddTransient<DataHandler, DataHandler>();
 builder.Services.AddSingleton<Utils, Utils>();
+
+builder.Services.AddScoped<IUnityOfWork, UnityOfWork>();
 
 //builder.Services.Configure<IdentityOptions>(options =>
 //{

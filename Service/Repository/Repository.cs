@@ -1,4 +1,5 @@
-﻿using Service.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Service.Data;
 using Service.Repository.IRepository;
 using System;
 using System.Collections.Generic;
@@ -11,38 +12,41 @@ namespace Service.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private ApplicationDbContext db;
+        private ApplicationDbContext _db;
+        internal DbSet<T> dbSet;
 
         public Repository(ApplicationDbContext db)
         {
-            this.db = db;
-        }
-
-        public void Add(T entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(T entity)
-        {
-            throw new NotImplementedException();
+            _db = db;
+            this.dbSet = _db.Set<T>();
         }
 
         public IEnumerable<T> GetAll()
         {
-            throw new NotImplementedException();
+            IQueryable<T> query = dbSet;
+            return query.ToList();
         }
-
+        public void Add(T entity)
+        {
+            dbSet.Add(entity);
+        }
         public T GetFirstOrDefault(Expression<Func<T, bool>> predicate)
         {
-            throw new NotImplementedException();
+            IQueryable<T> query = dbSet;
+
+            query = query.Where(predicate);
+
+            return query.FirstOrDefault();
         }
 
-   
+        public void Delete(T entity)
+        {
+            dbSet.Remove(entity);
+        }
 
         public void RemoveRange(IEnumerable<T> entity)
         {
-            throw new NotImplementedException();
+            dbSet.RemoveRange(entity);
         }
     }
 }

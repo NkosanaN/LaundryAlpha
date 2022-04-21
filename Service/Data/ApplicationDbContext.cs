@@ -13,6 +13,7 @@ namespace Service.Data
         public DbSet<ShoppingCart> ShoppingCart { get; set; }
         public DbSet<Company> Company { get; set; }
         public DbSet<Product> Product { get; set; }
+        public DbSet<ProductCategory> ProductCategory { get; set; }
         public DbSet<Debtors> Customer { get; set; }
         public DbSet<SaleOrderHeader> SaleOrderHeader { get; set; }
         public DbSet<SaleOrderDetail> SaleOrderDetail { get; set; }
