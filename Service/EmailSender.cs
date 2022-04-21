@@ -8,6 +8,8 @@ namespace Service
     {
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
+            string eemail = string.Empty;
+            string ppassword = string.Empty;
             var emailToSend = new MimeMessage();
             emailToSend.From.Add(MailboxAddress.Parse(/*email*/"S&SLaundry@gmail.com"));
             emailToSend.To.Add(MailboxAddress.Parse(email));
@@ -18,7 +20,7 @@ namespace Service
             using(var emailClient = new SmtpClient())
             {
                 emailClient.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-                emailClient.Authenticate("nkosana.prince.ndlela@gmail.com", "nkosanaagrippa");
+                emailClient.Authenticate(eemail, ppassword);
                 emailClient.Send(emailToSend);
                 emailClient.Disconnect(true);
             }
