@@ -7,6 +7,8 @@ using Stripe;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Service.Repository.IRepository;
 using Service.Repository;
+using Service.Dbinitializer;
+using Service.DbInitializer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,9 +58,12 @@ builder.Services.AddMvc()
     .AddDataAnnotationsLocalization();
 
 //builder.Services.AddTransient<DataHandler, DataHandler>();
-builder.Services.AddSingleton<Utils, Utils>();
+//builder.Services.AddSingleton<Utils, Utils>();
 
 builder.Services.AddScoped<IUnityOfWork, UnityOfWork>();
+//NB: Nkosana
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
 
 //builder.Services.Configure<IdentityOptions>(options =>
 //{
@@ -114,7 +119,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
-
+SeedDatabase();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();
@@ -136,3 +141,12 @@ var contentRoot = app.Environment.WebRootPath;
 Rotativa.AspNetCore.RotativaConfiguration.Setup(contentRoot, "rotativa");
 
 app.Run();
+
+void SeedDatabase() 
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInitilizer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        dbInitilizer.Initialize();
+    }
+}

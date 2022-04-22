@@ -135,15 +135,15 @@ namespace SandS.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            //Hardcoded role 
+            //moved to IDInitializer
 
-            if (!_roleManager.RoleExistsAsync(UtilityConstant.Role_User_Admin).GetAwaiter().GetResult())
-            {
-                await _roleManager.CreateAsync(new IdentityRole(UtilityConstant.Role_User_Admin));
-                await _roleManager.CreateAsync(new IdentityRole(UtilityConstant.Role_User_Ind));
-                await _roleManager.CreateAsync(new IdentityRole(UtilityConstant.Role_User_Employee));
-                await _roleManager.CreateAsync(new IdentityRole(UtilityConstant.Role_User_Comp));
-            }
+            //if (!_roleManager.RoleExistsAsync(UtilityConstant.Role_User_Admin).GetAwaiter().GetResult())
+            //{
+            //    await _roleManager.CreateAsync(new IdentityRole(UtilityConstant.Role_User_Admin));
+            //    await _roleManager.CreateAsync(new IdentityRole(UtilityConstant.Role_User_Ind));
+            //    await _roleManager.CreateAsync(new IdentityRole(UtilityConstant.Role_User_Employee));
+            //    await _roleManager.CreateAsync(new IdentityRole(UtilityConstant.Role_User_Comp));
+            //}
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 

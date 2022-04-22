@@ -10,6 +10,6 @@ namespace Service.Repository.IRepository
     public interface IProductRepository : IRepository<Product>
     {
         void Update(Product product);
-
+        void Add(Product product);
     }
 }

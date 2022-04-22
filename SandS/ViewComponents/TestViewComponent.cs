@@ -26,8 +26,8 @@ namespace SandS.ViewComponents
         public IViewComponentResult Invoke(string title)
         {
             ViewBag.Title = title;
-            ViewBag.Laundry = _unityofwork.Product.GetFirstOrDefault(x => x.ProductID == 1);
-            ViewBag.HouseHolds = _unityofwork.Product.GetFirstOrDefault(x => x.ProductID == 2);
+            ViewBag.Laundry = _unityofwork.Product.GetAll().Where(x => x.ProductCategoryID == 1).ToList();
+            ViewBag.HouseHolds = _unityofwork.Product.GetAll().Where(x => x.ProductCategoryID == 2).ToList();
             ViewBag.sList = ServicesGet();
 
             return View(new Debtors());

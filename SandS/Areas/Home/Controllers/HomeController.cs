@@ -18,11 +18,12 @@ namespace SandS.Controllers
         public IActionResult Index()
         {
             ViewBag.sList = ServicesGet();
-            ViewBag.Laundry =  _unityofwork.Product.GetFirstOrDefault(x => x.ProductID == 1);
-            ViewBag.HouseHolds = _unityofwork.Product.GetFirstOrDefault(x => x.ProductID == 2);
-            ViewBag.Comforters = _unityofwork.Product.GetFirstOrDefault(x => x.ProductID == 1002);
+            ViewBag.Laundry    = _unityofwork.Product.GetAll().Where(x => x.ProductCategoryID == 1).ToList();
+            ViewBag.HouseHolds = _unityofwork.Product.GetAll().Where(x => x.ProductCategoryID == 2).ToList();
+            ViewBag.Comforters = _unityofwork.Product.GetAll().Where(x => x.ProductCategoryID == 1002).ToList();
             return View();
         }
+       
 
         public IActionResult Privacy()
         {

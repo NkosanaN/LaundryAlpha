@@ -85,7 +85,7 @@ function getSelectedRows() {
         var obj = {};
         let cRow = $(this).closest("tr");
         obj["ProductName"] = cRow.find("td:eq(0)").html();
-        obj["ListPrice"] = cRow.find("td:eq(1)").html();
+        obj["ListPrice"] = parseFloat(cRow.find("td:eq(1)").html()).toFixed(0);
         data.push(obj);
     });
     return data;

@@ -19,15 +19,14 @@ namespace SandS.Controllers
     [Authorize(Roles= UtilityConstant.Role_User_Admin)]
     public class CategoryController : BaseClass
     {
-        private readonly DataHandler _dataHandler;
+
         private readonly IUnityOfWork _unityofwork;
         private readonly IToastNotification _toastNotification;
-         // GET: HomeController1
 
-        public CategoryController(DataHandler dataHandler,IUnityOfWork unityofwork,
+        public CategoryController(IUnityOfWork unityofwork,
             IToastNotification toastNotification)
         {
-            _dataHandler = dataHandler;
+
             _unityofwork = unityofwork;
             _toastNotification = toastNotification;
         }
@@ -121,12 +120,12 @@ namespace SandS.Controllers
                 };
                 for (int i = 0; i < products.Count; i++)
                 {
-                    //header.OrderLine.Add(new OrderDetail()
-                    //{
-                    //    Count = i,
-                    //    Items = products[i].ProductName,
-                    //    Price = products[i].ListPrice,
-                    //});
+                    header.OrderLine.Add(new OrderDetail()
+                    {
+                        Count = i,
+                        Items = products[i].ProductName,
+                        Price = products[i].ListPrice,
+                    });
                 }
                 receipt.customer = customer;
                 receipt.product = products;
