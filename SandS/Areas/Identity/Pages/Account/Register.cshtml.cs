@@ -35,7 +35,6 @@ namespace SandS.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly DataHandler _dataHandler;
 
         private readonly IUnityOfWork _unityofwork;
         public RegisterModel(
@@ -45,11 +44,9 @@ namespace SandS.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             RoleManager<IdentityRole> roleManager,
-            DataHandler handler,
             IUnityOfWork unityofwork)
         {
             _unityofwork = unityofwork;
-            _dataHandler = handler;
             _roleManager = roleManager;
             _userManager = userManager;
             _userStore = userStore;

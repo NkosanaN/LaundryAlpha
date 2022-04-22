@@ -142,7 +142,7 @@ Rotativa.AspNetCore.RotativaConfiguration.Setup(contentRoot, "rotativa");
 
 app.Run();
 
-void SeedDatabase() 
+void SeedDatabase()
 {
     using (var scope = app.Services.CreateScope())
     {
