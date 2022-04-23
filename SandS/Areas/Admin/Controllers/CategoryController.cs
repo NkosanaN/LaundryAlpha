@@ -92,6 +92,8 @@ namespace SandS.Controllers
                     customerObj.StreetAddress1 = "Mamelodi";
                 else
                     customerObj.StreetAddress1 = model.StreetAddress1;
+
+               
             }
             catch
             {
@@ -111,22 +113,36 @@ namespace SandS.Controllers
 
                 OrderHeader header = new OrderHeader()
                 {
+                    OrdHeaderCode = "1212", //will change to random for Key
                     Name = customer.FirstName,
                     Surname = customer.LastName,
                     Email = customer.Email,
                     ItemNr = products.Count,
                     TotalLine = products.Select(x => x.ListPrice).Sum(),
-                    //OrderLine = new()
+                    //OrderLine = new List<OrderDetail>().Add()
                 };
-                for (int i = 0; i < products.Count; i++)
+                _unityofwork.OrderHeader.Add(header);
+
+                foreach (OrderDetail details in header.OrderLine)
                 {
-                    header.OrderLine.Add(new OrderDetail()
-                    {
-                        Count = i,
-                        Items = products[i].ProductName,
-                        Price = products[i].ListPrice,
-                    });
+                    details.OrdHeaderCode = "1212";
+                    _unityofwork.OrderDetail.Add(details);
                 }
+                _unityofwork.Save();
+
+                #region
+                //for (int i = 0; i < products.Count; i++)
+                //{
+                //    header.OrderLine.Add(new OrderDetail()
+                //    {
+                //        Count = i,
+                //        Items = products[i].ProductName,
+                //        Price = products[i].ListPrice,
+                //    });
+                //    _unityofwork.OrderDetail.Add() 
+                //}
+                #endregion
+
                 receipt.customer = customer;
                 receipt.product = products;
 
