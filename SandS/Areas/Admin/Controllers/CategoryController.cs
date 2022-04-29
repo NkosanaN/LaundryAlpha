@@ -16,10 +16,9 @@ using System.Security.Claims;
 namespace SandS.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles= UtilityConstant.Role_User_Admin)]
+    [Authorize(Roles = UtilityConstant.Role_User_Admin)]
     public class CategoryController : BaseClass
     {
-
         private readonly IUnityOfWork _unityofwork;
         private readonly IToastNotification _toastNotification;
 
@@ -32,74 +31,34 @@ namespace SandS.Controllers
         }
         public ActionResult Index()
         {
-            //var claimsIdentity = (ClaimsIdentity)User.Identity;
-            //var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            //ShoppingCart _shoppingCart = new();
-            //_shoppingCart.ApplicationUserId = claim.Value;
-
-            //  ViewData["routeInfo"] = ControllerContext.MyDisplayRouteInfo();
-
-            //var model = _dataHandler.SalesHeaderListGet();
-            //model ??= new List<SaleOrderHeader>();
-
             IEnumerable<OrderHeader> obj = _unityofwork.OrderHeader.GetAll();
             obj ??= new List<OrderHeader>();
             return View(obj);
-
+        }
+        public ActionResult Edit(string ordcode) 
+        {
+            return View(_unityofwork.OrderDetail.GetAll().Where(x => x.OrdHeaderCode == ordcode));
         }
 
-        public ActionResult OrderDetail(int Id) 
+        public ActionResult Completed(string ordcode)
         {
-            return View();
-            //return View(_unityofwork.SaleOrderDetail.GetFirstOrDefault(x => x.Id == id));
-        }
+            //var complete = _unityofwork.OrderHeader.Include("OrderDetail").ToList();
+            var model = _unityofwork.OrderHeader.GetFirstOrDefault(u => u.OrdHeaderCode == ordcode);
+            model.isCompleted = true;
 
-        // GET: HomeController1/Details/5
-        public ActionResult Details(int id)
-        {
-
-            //var claimsIdentity = (ClaimsIdentity)User.Identity;
-            //var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            //_shoppingCart.ApplicationUserId = claim.Value;
-            return View();
-         //   return View(_dataHandler.CustomerGetSingle(id));
-        }
-
-        // GET: HomeController1/Create
-        public ActionResult Create()
-        {
-            ViewBag.sList = ServicesGet();
-            return View();
-        }
-
-        // POST: HomeController1/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(Debtors model)
-        {
-            try
+            foreach (var item in model.OrderLine)
             {
-                var customerObj = new Debtors()
+                _unityofwork.AuditTray.Add(new AuditTray
                 {
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    Email = model.Email,
-                    MobilePhoneNumber = model.MobilePhoneNumber,
-                    Catergory  = model.Catergory
-                };
-
-                if (customerObj.isCollected)
-                    customerObj.StreetAddress1 = "Mamelodi";
-                else
-                    customerObj.StreetAddress1 = model.StreetAddress1;
-
-               
+                    OrdHeaderCode = item.OrdHeaderCode,
+                    Price = item.Price,
+                    Name = model.Name,
+                    Items = item.Items
+                });
             }
-            catch
-            {
-                return View();
-            }
-            return View();
+            _unityofwork.Save();
+            return RedirectToAction("Index");
+
         }
 
         // GET: HomeController1/Edit/5
@@ -110,38 +69,31 @@ namespace SandS.Controllers
             {
                 var customer = JsonConvert.DeserializeObject<Debtors>(customerinfo);
                 var products = JsonConvert.DeserializeObject<List<Product>>(selectedlines);
+                string code = RandomString.GenerateOrderCode(5);
 
                 OrderHeader header = new OrderHeader()
                 {
-                    OrdHeaderCode = "1212", //will change to random for Key
+                    OrdHeaderCode = code, 
                     Name = customer.FirstName,
                     Surname = customer.LastName,
                     Email = customer.Email,
                     ItemNr = products.Count,
                     TotalLine = products.Select(x => x.ListPrice).Sum(),
-                    //OrderLine = new List<OrderDetail>().Add()
+                    OrderLine = new()
                 };
                 _unityofwork.OrderHeader.Add(header);
-
-                foreach (OrderDetail details in header.OrderLine)
+                
+                for (int i = 0; i < products.Count; i++)
                 {
-                    details.OrdHeaderCode = "1212";
-                    _unityofwork.OrderDetail.Add(details);
+                    _unityofwork.OrderDetail.Add(new OrderDetail()
+                    {
+                        OrdHeaderCode = code,
+                        Count = i + 1,
+                        Items = products[i].ProductName,
+                        Price = products[i].ListPrice,
+                    });
                 }
                 _unityofwork.Save();
-
-                #region
-                //for (int i = 0; i < products.Count; i++)
-                //{
-                //    header.OrderLine.Add(new OrderDetail()
-                //    {
-                //        Count = i,
-                //        Items = products[i].ProductName,
-                //        Price = products[i].ListPrice,
-                //    });
-                //    _unityofwork.OrderDetail.Add() 
-                //}
-                #endregion
 
                 receipt.customer = customer;
                 receipt.product = products;
@@ -177,7 +129,6 @@ namespace SandS.Controllers
                     Email = customer.Email,
                     ItemNr = products.Count,
                     TotalLine = products.Select(x => x.ListPrice).Sum(),
-                    //OrderLine = new()
                 };
                 var options = new SessionCreateOptions
                 {
@@ -241,7 +192,17 @@ namespace SandS.Controllers
 
             return View(id);
         }
+        public ActionResult Details(int id)
+        {
 
-       
+            //var claimsIdentity = (ClaimsIdentity)User.Identity;
+            //var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            //_shoppingCart.ApplicationUserId = claim.Value;
+            return View();
+            //   return View(_dataHandler.CustomerGetSingle(id));
+        }
+
+
+
     }
 }

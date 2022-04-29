@@ -1,4 +1,4 @@
-﻿var totalL = 0.00, totalB = 0.00;
+﻿var totalL = 0.00, totalB = 0.00; totalC = 0.00;
 var table;
 $(document).ready(function () {
     $('#isCollection').prop('checked', true);
@@ -12,7 +12,7 @@ $('#isCollection').on('change', function () {
 });
 
 $('#adminviewsummary').on('click', function () {
-    AdmincreateSummaryTable(AdmingetSelectedRows());
+    AdmincreateSummaryTable(AdmingetSelectedRows()); 
 
 })
 $('#adminModalToggle').on('show.bs.modal', function (e) {
@@ -43,7 +43,7 @@ function AdmincreateSummaryTable(data) {
             + "</td></tr>"
     });
     html += "<tr class='alert-primary text-dark'><th>Total</th>"
-        + "<th style='text-align: right'>" + parseFloat(totalL + totalB).toFixed(2)
+        + "<th style='text-align: right'>" + parseFloat(totalL + totalB + totalC).toFixed(2)
         + "</th></tr>";
 
     $('#adminsummaryViewTbl').append(html);
@@ -107,7 +107,10 @@ $('#generateReceipt').on('click', function () {
 
 
     let u = '/admin/category/generatereceipt?customerinfo=' + JSON.stringify(custumerobj) + '&selectedlines=' + JSON.stringify(getSelectedRows());
-    window.location.href = u;
+//  window.location.href = u;
+
+    window.location.href = open(u, "_blank");
+
 });
 
 $('#adminviewsummary').on('click', function () {

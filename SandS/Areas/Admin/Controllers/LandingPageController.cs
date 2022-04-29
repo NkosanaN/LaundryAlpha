@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using SandS.Helpers;
-using Service;
 using Service.Repository.IRepository;
 
 namespace SandS.Controllers
@@ -24,7 +21,7 @@ namespace SandS.Controllers
 
             ViewBag.Laundry = _unityofwork.Product.GetFirstOrDefault(x => x.ProductID == 1);
             ViewBag.HouseHolds = _unityofwork.Product.GetFirstOrDefault(x => x.ProductID == 2);
-            ViewBag.Comforters = _unityofwork.Product.GetFirstOrDefault(x => x.ProductID == 1002);
+            ViewBag.Comforters = _unityofwork.Product.GetFirstOrDefault(x => x.ProductID == 3);
             ViewBag.sList = ServicesGet();
 
             return View();

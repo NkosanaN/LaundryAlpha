@@ -43,7 +43,7 @@ namespace SandS.Areas.Admin.Controllers
         }
 
         // GET: CompanyController/Create
-        public ActionResult Upsert(int ?id)
+        public ActionResult Upsert(int? id)
         {
             Company company = new();
 
@@ -73,18 +73,14 @@ namespace SandS.Areas.Admin.Controllers
                 //}
 
 
-                //if (model.Id==0)
-                //{
-                //    if (_dataHandler.AddCompany (model)) 
-                //    {
-                //        return RedirectToAction("Index");
-                //    }
-                //}
-                //else
-                //{
-                //    if (_dataHandler.UpdateCustomer(model))
-                //    { return RedirectToAction("Index");}
-                //}
+                if (model.Id == 0)
+                {
+                    _unityofwork.Company.Add(model);
+                }
+                else
+                {
+                    _unityofwork.Company.Update(model);
+                }
             }
             catch (Exception ex)
             {
@@ -92,7 +88,7 @@ namespace SandS.Areas.Admin.Controllers
                 //_logger.LogError(ex.Message);
                 return View();
             }
-            return View(model);
+            return RedirectToAction("Index");
         }
     }
 }

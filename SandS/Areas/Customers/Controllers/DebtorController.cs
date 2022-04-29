@@ -21,22 +21,22 @@ namespace SandS.Controllers
             return View();
         }
 
-        public ActionResult PostPO(string customerinfo, string selectedlines)
-        {
-            try
-            {
-                var customer = JsonConvert.DeserializeObject<Debtors>(customerinfo);
-                var service = JsonConvert.DeserializeObject<List<Product>>(selectedlines);
+        //public ActionResult PostPO(string customerinfo, string selectedlines)
+        //{
+        //    try
+        //    {
+        //        var customer = JsonConvert.DeserializeObject<Debtors>(customerinfo);
+        //        var service = JsonConvert.DeserializeObject<List<Product>>(selectedlines);
 
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
-            }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //        throw;
+        //    }
             
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
     }
 }

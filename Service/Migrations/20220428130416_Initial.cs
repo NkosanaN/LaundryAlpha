@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Service.Migrations
 {
-    public partial class A : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,6 +21,20 @@ namespace Service.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AuditTray",
+                columns: table => new
+                {
+                    OrdHeaderCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Items = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AuditTray", x => x.OrdHeaderCode);
                 });
 
             migrationBuilder.CreateTable(
@@ -71,7 +85,8 @@ namespace Service.Migrations
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ItemNr = table.Column<int>(type: "int", nullable: false),
-                    TotalLine = table.Column<double>(type: "float", nullable: false)
+                    TotalLine = table.Column<double>(type: "float", nullable: false),
+                    isCompleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -79,34 +94,17 @@ namespace Service.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Product",
-                columns: table => new
-                {
-                    ProductID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ListPrice = table.Column<double>(type: "float", nullable: false),
-                    ProductCategoryID = table.Column<int>(type: "int", nullable: false),
-                    ImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SessionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PaymentIntentId = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Product", x => x.ProductID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ProductCategory",
                 columns: table => new
                 {
-                    ProductCategoryID = table.Column<int>(type: "int", nullable: false)
+                    ProductCatID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProductRef = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductCategory", x => x.ProductCategoryID);
+                    table.PrimaryKey("PK_ProductCategory", x => x.ProductCatID);
                 });
 
             migrationBuilder.CreateTable(
@@ -172,21 +170,46 @@ namespace Service.Migrations
                 name: "OrderDetail",
                 columns: table => new
                 {
-                    OrderDetailCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    OrderDetailCode = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Count = table.Column<int>(type: "int", nullable: false),
                     Items = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    OrdHeaderCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OrderHeaderOrdHeaderCode = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    OrdHeaderCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    isCompleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderDetail", x => x.OrderDetailCode);
                     table.ForeignKey(
-                        name: "FK_OrderDetail_OrderHeader_OrderHeaderOrdHeaderCode",
-                        column: x => x.OrderHeaderOrdHeaderCode,
+                        name: "FK_OrderDetail_OrderHeader_OrdHeaderCode",
+                        column: x => x.OrdHeaderCode,
                         principalTable: "OrderHeader",
                         principalColumn: "OrdHeaderCode",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Product",
+                columns: table => new
+                {
+                    ProductID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ListPrice = table.Column<double>(type: "float", nullable: false),
+                    ImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SessionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PaymentIntentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductCategoryID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Product", x => x.ProductID);
+                    table.ForeignKey(
+                        name: "FK_Product_ProductCategory_ProductCategoryID",
+                        column: x => x.ProductCategoryID,
+                        principalTable: "ProductCategory",
+                        principalColumn: "ProductCatID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -347,9 +370,14 @@ namespace Service.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetail_OrderHeaderOrdHeaderCode",
+                name: "IX_OrderDetail_OrdHeaderCode",
                 table: "OrderDetail",
-                column: "OrderHeaderOrdHeaderCode");
+                column: "OrdHeaderCode");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Product_ProductCategoryID",
+                table: "Product",
+                column: "ProductCategoryID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ShoppingCart_ApplicationUserId",
@@ -380,13 +408,13 @@ namespace Service.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "AuditTray");
+
+            migrationBuilder.DropTable(
                 name: "Customer");
 
             migrationBuilder.DropTable(
                 name: "OrderDetail");
-
-            migrationBuilder.DropTable(
-                name: "ProductCategory");
 
             migrationBuilder.DropTable(
                 name: "ShoppingCart");
@@ -405,6 +433,9 @@ namespace Service.Migrations
 
             migrationBuilder.DropTable(
                 name: "Company");
+
+            migrationBuilder.DropTable(
+                name: "ProductCategory");
         }
     }
 }

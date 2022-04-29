@@ -91,8 +91,8 @@ namespace Service.DbInitializer
                 _unityOfWork.Product.Add(new Product { ProductName = "Wash Iron and Fold", ListPrice = 190.00, ImgUrl = string.Empty, ProductCategoryID = 1 });
                 _unityOfWork.Product.Add(new Product { ProductName = "Blankets (Single Ply)", ListPrice = 180.00, ImgUrl = string.Empty, ProductCategoryID = 2 });
                 _unityOfWork.Product.Add(new Product { ProductName = "Blanket (Double Ply)", ListPrice = 200.00, ImgUrl = string.Empty, ProductCategoryID = 2 });
-                _unityOfWork.Product.Add(new Product { ProductName = "Double/Queen", ListPrice = 200.00, ImgUrl = string.Empty, ProductCategoryID = 1002 });
-                _unityOfWork.Product.Add(new Product { ProductName = "Single", ListPrice = 190.00, ImgUrl = string.Empty, ProductCategoryID = 1002 });
+                _unityOfWork.Product.Add(new Product { ProductName = "Double/Queen", ListPrice = 200.00, ImgUrl = string.Empty, ProductCategoryID = 3 });
+                _unityOfWork.Product.Add(new Product { ProductName = "Single", ListPrice = 190.00, ImgUrl = string.Empty, ProductCategoryID = 3 });
                 
             }
             _unityOfWork.Save();

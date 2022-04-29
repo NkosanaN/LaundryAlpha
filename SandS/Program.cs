@@ -120,7 +120,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
-SeedDatabase();
+//SeedDatabase();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();

@@ -4,8 +4,6 @@
 @using Microsoft.Extensions.Options;
 @using S_and_S
 @inject IStringLocalizer<SharedResource> Localizer
-
-
 @{
     ViewData["Title"] = "Index";
     ViewData["isExternalUser"] = false;
@@ -21,22 +19,28 @@
     <thead>
         <tr>
             <th>
-                @Localizer["SaleOrdHeaderCode"].Value
+                @* @Localizer["SaleOrdHeaderCode"].Value*@
+                @Html.DisplayNameFor(model => model.OrdHeaderCode)
             </th>
             <th>
-                @Localizer["Name"].Value
+                @*         @Localizer["Name"].Value*@
+                @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Localizer["Surname"].Value
+                @*         @Localizer["Surname"].Value*@
+                @Html.DisplayNameFor(model => model.Surname)
             </th>
             <th>
-                @Localizer["Email"].Value
+                @*             @Localizer["Email"].Value*@
+                @Html.DisplayNameFor(model => model.Email)
             </th>
             <th>
-                @Localizer["ItemNr"].Value
+                @*    @Localizer["ItemNr"].Value*@
+                @Html.DisplayNameFor(model => model.ItemNr)
             </th>
             <th>
-                @Localizer["TotalLine"].Value
+                @*       @Localizer["TotalLine"].Value*@
+                @Html.DisplayNameFor(model => model.TotalLine)
             </th>
             <th></th>
         </tr>
@@ -56,10 +60,10 @@
                     @Html.DisplayFor(modelItem => item.Surname)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
+                    <text  style="text-decoration:none;">@item.Email</text>
+                  </td>
                 <td>
-                    <a style="text-decoration: none" asp-action="SaleOrderDetail" asp-route-saleordcode="@item.OrdHeaderCode">@item.ItemNr</a>
+                    <a style="text-decoration: none" asp-action="Edit" asp-route-ordcode="@item.OrdHeaderCode">@item.ItemNr</a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.TotalLine)
@@ -74,6 +78,8 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@item.OrdHeaderCode">Edit</a></li>
                             <li><a class="dropdown-item" asp-action="Delete" asp-route-id="@item.OrdHeaderCode">Delete</a></li>
+                            <li class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" asp-action="Completed">Completed </a></li>
                         </ul>
                     </div>
 

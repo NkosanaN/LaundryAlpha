@@ -1,4 +1,4 @@
-﻿var totalL = 0.00, totalB = 0.00;
+﻿var totalL = 0.00, totalB = 0.00, totalC = 0.00;
 var table;
 $(document).ready(function () {
     table = $('table.display').DataTable({
@@ -18,9 +18,10 @@ function clearFields() {
     $('#tblBedding').addClass('d-none');
     $('#tblLaundry').addClass('d-none');
     $('input[type="checkbox"]').prop('checked', false);
-    totalL = 0.00, totalB = 0.00;
+    totalL = 0.00, totalB = 0.00; totalC = 0.00;
     $('#totall').html('0.00');
     $('#totalb').html('0.00');
+    $('#totalc').html('0.00');
 }
 
 $("input:checkbox[name='row-check']").on('change', function () {
@@ -40,6 +41,10 @@ $("input:checkbox[name='row-check']").on('change', function () {
             totalB += price;
             $('#totalb').html(totalB.toFixed(2));
         }
+        else if (serviceName == 'Comforters') {
+            totalC += price;
+            $('#totalc').html(totalC.toFixed(2));
+        }
     }
     else
     {
@@ -51,6 +56,10 @@ $("input:checkbox[name='row-check']").on('change', function () {
             totalB -= price;
             $('#totalb').html(totalB.toFixed(2));
         }
+        else if (serviceName == 'Comforters') {
+            totalC -= price;
+            $('#totalc').html(totalC.toFixed(2));
+        }
     }
 });
 $('#Catergory').on('change', function () {
@@ -60,17 +69,20 @@ $('#Catergory').on('change', function () {
     console.log(selected)
     switch (selected) {
 
-        case 'All':
+        case 'Comforters':
+            $('#tblComforters').removeClass('d-none');
             $('#tblLaundry').addClass('d-none');
             $('#tblBedding').addClass('d-none');
             break;
         case 'Laundry':
             $('#tblLaundry').removeClass('d-none');
             $('#tblBedding').addClass('d-none');
+            $('#tblComforters').addClass('d-none');
             break;
         case 'HouseHolds':
             $('#tblBedding').removeClass('d-none');
             $('#tblLaundry').addClass('d-none');
+            $('#tblComforters').addClass('d-none');
             break;
 
         default:

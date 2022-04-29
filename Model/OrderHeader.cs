@@ -15,8 +15,9 @@ namespace Model
         [Display(Name ="Nr of Items")]
         public int ItemNr { get; set; }
 
-       [Display(Name = "Total")]
+        [Display(Name = "Total")]
         public double TotalLine { get; set; }
+        public bool isCompleted { get; set; }
         public List<OrderDetail> OrderLine { get; set; } = new List<OrderDetail>();
     }
 }

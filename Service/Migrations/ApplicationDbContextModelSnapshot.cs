@@ -226,6 +226,27 @@ namespace Service.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Model.AuditTray", b =>
+                {
+                    b.Property<string>("OrdHeaderCode")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Items")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.HasKey("OrdHeaderCode");
+
+                    b.ToTable("AuditTray");
+                });
+
             modelBuilder.Entity("Model.Company", b =>
                 {
                     b.Property<int>("Id")
@@ -309,8 +330,11 @@ namespace Service.Migrations
 
             modelBuilder.Entity("Model.OrderDetail", b =>
                 {
-                    b.Property<string>("OrderDetailCode")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("OrderDetailCode")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderDetailCode"), 1L, 1);
 
                     b.Property<int>("Count")
                         .HasColumnType("int");
@@ -320,18 +344,17 @@ namespace Service.Migrations
 
                     b.Property<string>("OrdHeaderCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OrderHeaderOrdHeaderCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
+                    b.Property<bool>("isCompleted")
+                        .HasColumnType("bit");
+
                     b.HasKey("OrderDetailCode");
 
-                    b.HasIndex("OrderHeaderOrdHeaderCode");
+                    b.HasIndex("OrdHeaderCode");
 
                     b.ToTable("OrderDetail");
                 });
@@ -359,6 +382,9 @@ namespace Service.Migrations
                     b.Property<double>("TotalLine")
                         .HasColumnType("float");
 
+                    b.Property<bool>("isCompleted")
+                        .HasColumnType("bit");
+
                     b.HasKey("OrdHeaderCode");
 
                     b.ToTable("OrderHeader");
@@ -373,7 +399,6 @@ namespace Service.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductID"), 1L, 1);
 
                     b.Property<string>("ImgUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("ListPrice")
@@ -394,22 +419,27 @@ namespace Service.Migrations
 
                     b.HasKey("ProductID");
 
+                    b.HasIndex("ProductCategoryID");
+
                     b.ToTable("Product");
                 });
 
             modelBuilder.Entity("Model.ProductCategory", b =>
                 {
-                    b.Property<int>("ProductCategoryID")
+                    b.Property<int>("ProductCatID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductCategoryID"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductCatID"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ProductCategoryID");
+                    b.Property<int?>("ProductRef")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductCatID");
 
                     b.ToTable("ProductCategory");
                 });
@@ -525,11 +555,22 @@ namespace Service.Migrations
                 {
                     b.HasOne("Model.OrderHeader", "OrderHeader")
                         .WithMany("OrderLine")
-                        .HasForeignKey("OrderHeaderOrdHeaderCode")
+                        .HasForeignKey("OrdHeaderCode")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("OrderHeader");
+                });
+
+            modelBuilder.Entity("Model.Product", b =>
+                {
+                    b.HasOne("Model.ProductCategory", "ProductCategory")
+                        .WithMany()
+                        .HasForeignKey("ProductCategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductCategory");
                 });
 
             modelBuilder.Entity("Model.ShoppingCart", b =>

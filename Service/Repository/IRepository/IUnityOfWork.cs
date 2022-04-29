@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Service.Repository.IRepository
+﻿namespace Service.Repository.IRepository
 {
     public interface IUnityOfWork
     {
@@ -14,6 +8,7 @@ namespace Service.Repository.IRepository
         IProductRepository Product { get; }
         IOrderHeaderRepository OrderHeader { get; }
         IOrderDetailRepository OrderDetail { get; }
+        IAuditTrayRepository AuditTray { get; }
         void Save();
     }
 }

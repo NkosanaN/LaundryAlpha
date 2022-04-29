@@ -20,7 +20,7 @@ namespace SandS.Controllers
             ViewBag.sList = ServicesGet();
             ViewBag.Laundry    = _unityofwork.Product.GetAll().Where(x => x.ProductCategoryID == 1).ToList();
             ViewBag.HouseHolds = _unityofwork.Product.GetAll().Where(x => x.ProductCategoryID == 2).ToList();
-            ViewBag.Comforters = _unityofwork.Product.GetAll().Where(x => x.ProductCategoryID == 1002).ToList();
+            ViewBag.Comforters = _unityofwork.Product.GetAll().Where(x => x.ProductCategoryID == 3).ToList();
             return View();
         }
        

@@ -1,10 +1,9 @@
-﻿@model List<Model.OrderDetail>
-
+﻿@model IEnumerable<Model.OrderDetail>
 @{
     ViewData["Title"] = "SaleOrderDetail";
 }
 
-<h1>Sale Order Detail </h1>
+<h1>Order Detail </h1>
 
 <table width="38%">
     <thead>
@@ -32,3 +31,5 @@
         </tr>
     </tfoot>
 </table>
+<p></p>
+<a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>

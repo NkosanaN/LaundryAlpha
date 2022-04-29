@@ -6,28 +6,17 @@ namespace SandS.Helpers
     public class BaseClass : Controller
     {
     
-        #region Api
+        #region SelectList
         public SelectList ServicesGet()
         {
             var stypes = new List<string>
-            {   "All",
+            { 
                 "Laundry",
-                "HouseHolds"
+                "HouseHolds",
+                "Comforters"
             };
             return new SelectList(stypes);
         }
         #endregion
-        //public DataHandler _dataHandler;
-        //public BaseClass(DataHandler dataHandler)
-        //{
-        //    _dataHandler = dataHandler;
-        //}
-        //#region SelectList
-        //public SelectList ServicesGet()
-        //{
-        //    var stypes = _dataHandler.ProductCategoryListGet();
-
-        //    return new SelectList(stypes);
-        //}
     }
 }
