@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Service.Data;
 using Service.Repository;
 using Service.Repository.IRepository;
 

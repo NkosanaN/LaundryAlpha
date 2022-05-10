@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Model;
 using NToastNotify;
+using SandS.Helpers;
 using Service;
 using Service.Repository.IRepository;
 //using Microsoft.AspNetCore.Hosting.;
@@ -8,12 +9,15 @@ using Service.Repository.IRepository;
 namespace SandS.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CompanyController : Controller
+    public class CompanyController : BaseContoller
     {
         private readonly IUnityOfWork _unityofwork;
 
         //private readonly ILogger _logger;
-        public CompanyController(IUnityOfWork unityofwork/*,IHostingEnvironment hosting,ILogger logger*/)
+        public CompanyController(IUnityOfWork unityofwork,
+            IToastNotification toast
+            /*,IHostingEnvironment hosting,ILogger logger*/)
+            : base(unityofwork, toast)
         {
             _unityofwork = unityofwork;
             //_logger = logger;
@@ -63,30 +67,34 @@ namespace SandS.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Upsert(Company model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                string uniqueFileName = string.Empty;
-
-                //if(model.Photo != null) 
-                //{
-
-                //}
-
-
-                if (model.Id == 0)
+                try
                 {
-                    _unityofwork.Company.Add(model);
+                    string uniqueFileName = string.Empty;
+
+                    //if(model.Photo != null) 
+                    //{
+
+                    //}
+
+                    if (model.Id == 0)
+                    {
+                        _unityofwork.Company.Add(model);
+                    }
+                    else
+                    {
+                        _unityofwork.Company.Update(model);
+                    }
+                    _unityofwork.Save();
                 }
-                else
+                catch (Exception ex)
                 {
-                    _unityofwork.Company.Update(model);
+                    Console.WriteLine(ex.Message);
+                    //_logger.LogError(ex.Message);
+                    return View();
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                //_logger.LogError(ex.Message);
-                return View();
+
             }
             return RedirectToAction("Index");
         }

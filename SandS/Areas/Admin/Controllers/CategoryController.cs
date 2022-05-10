@@ -17,17 +17,14 @@ namespace SandS.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = UtilityConstant.Role_User_Admin)]
-    public class CategoryController : BaseClass
+    public class CategoryController : BaseContoller
     {
         private readonly IUnityOfWork _unityofwork;
-        private readonly IToastNotification _toastNotification;
 
         public CategoryController(IUnityOfWork unityofwork,
-            IToastNotification toastNotification)
+            IToastNotification toast):base(unityofwork, toast)
         {
-
             _unityofwork = unityofwork;
-            _toastNotification = toastNotification;
         }
         public ActionResult Index()
         {
@@ -46,16 +43,16 @@ namespace SandS.Controllers
             var model = _unityofwork.OrderHeader.GetFirstOrDefault(u => u.OrdHeaderCode == ordcode);
             model.isCompleted = true;
 
-            foreach (var item in model.OrderLine)
-            {
-                _unityofwork.AuditTray.Add(new AuditTray
-                {
-                    OrdHeaderCode = item.OrdHeaderCode,
-                    Price = item.Price,
-                    Name = model.Name,
-                    Items = item.Items
-                });
-            }
+            //foreach (var item in model.OrderLine)
+            //{
+            //    _unityofwork.AuditTray.Add(new AuditTray
+            //    {
+            //        OrdHeaderCode = item.OrdHeaderCode,
+            //        Price = item.Price,
+            //        Name = model.Name,
+            //        Items = item.Items
+            //    });
+            //}
             _unityofwork.Save();
             return RedirectToAction("Index");
 
@@ -93,18 +90,22 @@ namespace SandS.Controllers
                         Price = products[i].ListPrice,
                     });
                 }
-                _unityofwork.Save();
-
+                //_unityofwork.Save();
                 receipt.customer = customer;
                 receipt.product = products;
+                ViewBag.ReceiptNr = code;
 
-                var potrait = new ViewAsPdf(receipt)
-                {
-                    FileName = "receipt.pdf",
-                    PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
-                    PageSize = Rotativa.AspNetCore.Options.Size.A4
-                };
-                return potrait;
+                Notify("Successful created order", "Successful created order", type: NotificationType.success);
+                return View("Index");
+
+                //return View(receipt);
+                //var potrait = new ViewAsPdf(receipt)
+                //{
+                //    FileName = "receipt.pdf",
+                //    PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
+                //    PageSize = Rotativa.AspNetCore.Options.Size.A4
+                //};
+                //return potrait;
             }
             catch (Exception ex)
             {

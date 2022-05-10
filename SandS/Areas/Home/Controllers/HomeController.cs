@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SandS.Helpers;
 using SandS.Models;
 using Service;
@@ -7,14 +8,23 @@ using System.Diagnostics;
 
 namespace SandS.Controllers
 {
-    public class HomeController : BaseClass
+    public class HomeController : Controller
     {
         private readonly IUnityOfWork _unityofwork;
         public HomeController(IUnityOfWork unityofwork)
         {
             _unityofwork = unityofwork;
         }
-
+        public SelectList ServicesGet()
+        {
+            var stypes = new List<string>
+            {
+                "Laundry",
+                "HouseHolds",
+                "Comforters"
+            };
+            return new SelectList(stypes);
+        }
         public IActionResult Index()
         {
             ViewBag.sList = ServicesGet();
@@ -24,7 +34,6 @@ namespace SandS.Controllers
             return View();
         }
        
-
         public IActionResult Privacy()
         {
             return View();

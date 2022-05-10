@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     @*    <link rel="stylesheet" href="~/SandS.styles.css" asp-append-version="true" />*@
+
+    <link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+
     <link rel="stylesheet" href="~/lib/animate.css/animate.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.css" />
 </head>
@@ -34,12 +39,14 @@
                                     <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Create User</a></li>
                                 </ul>
                             </li>
-                        }else
-                         @if(!User.IsInRole(UtilityConstant.Role_User_Admin))
-{                        <li class="nav-item">
-                            <a class="nav-link" href="/Customers/PlaceOrder/Index" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Place Order</a>
-                        </li>
-}
+                        }
+                        else
+                                     @if (!User.IsInRole(UtilityConstant.Role_User_Admin))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Customers/PlaceOrder/Index" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Place Order</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link" href="/Home/Index" data-bs-toggle="modal" data-bs-target="#pricingModel">Pricing</a>
                         </li>
@@ -56,7 +63,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted fixed-bottom">
         <div class="container">
             &copy; 2022 - S&S - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
@@ -64,11 +71,13 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @*    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>*@
+    
 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="~/lib/bootbox.js/bootbox.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @await Html.PartialAsync("_notificationPartial")
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

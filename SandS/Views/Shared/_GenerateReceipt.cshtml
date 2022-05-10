@@ -2,7 +2,7 @@
 @model GenerateReceiptViewModel
 @{
     Layout = null;
-    string receiptNumber  = (string)ViewBag.ReceiptNr;
+    string receiptNumber = (string)ViewBag.ReceiptNr;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +14,7 @@
 </head>
 <body>
     <div class="invoice-title">
-        Receipt : receiptNumber;
+        Receipt : @receiptNumber
     </div>
 
 
@@ -79,7 +79,7 @@
                     </td>
                 </tr>
 
-                                <tr>
+                <tr>
                     <td class=clearfix>
                         <button type="button" class="btn btn-outline-secondary ">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">

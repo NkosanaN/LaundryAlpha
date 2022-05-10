@@ -2,17 +2,19 @@
     Layout = "/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row">
-    <div class="col-md-6 offset-md-3">
+<div class="row mt-4">
+    <div class="col-md-4 offset-md-3">
         <div class="card login-logout-tab">
             <div class="card-header">
                 <ul class="nav nav-tabs card-header-tabs">
-                  <li class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link" href="/Identity/Account/Login">Sign In</a>
-                  </li>
+                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="/Identity/Account/Register">Register</a>
-                  </li>
+                    </li>
+
                 </ul>
             </div>
             <div class="card-content">
@@ -28,4 +30,17 @@
 
 @section Scripts {
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        $(document).ready(function(){
+           var current  = location.pathname;
+            $('.nav-tabs li a').each(function(){
+                var $this = $(this);
+                if(current.indexOf($this.attr('href')) !== -1)
+                {
+                    $this.addClass('active');
+                }
+            })
+        })
+    </script>
 }

@@ -103,13 +103,15 @@ $('#generateReceipt').on('click', function () {
     custumerobj["MobilePhoneNumber"] = $('#MobilePhoneNumber').val();
     custumerobj["Category"] = $('#Catergory Option:Selected').text();
     custumerobj["isCollected"] = $('#isCollection').is(':checked');
-    custumerobj["StreetAddress1"] = $('#inputAddress').val() === "" ? "Mamelodi" : ('#inputAddress').val();
+    //custumerobj["StreetAddress1"] = $('#inputAddress').val() === "" ? "Mamelodi" : ('#inputAddress').val();
 
+    //let u = '/viewcomponents/generatereceipt/invoke?customerinfo=' + JSON.stringify(custumerobj) + '&selectedlines=' + JSON.stringify(getSelectedRows());
 
-    let u = '/admin/category/generatereceipt?customerinfo=' + JSON.stringify(custumerobj) + '&selectedlines=' + JSON.stringify(getSelectedRows());
-//  window.location.href = u;
+   //let u = '/customers/debtor/generatereceipt?customerinfo=' + JSON.stringify(custumerobj) + '&selectedlines=' + JSON.stringify(getSelectedRows());
+   let u = '/admin/category/generatereceipt?customerinfo=' + JSON.stringify(custumerobj) + '&selectedlines=' + JSON.stringify(getSelectedRows());
+    window.location.href = u;
 
-    window.location.href = open(u, "_blank");
+   // window.location.href = open(u, "_blank");
 
 });
 

@@ -1,14 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
 using SandS.Helpers;
 using Service.Repository.IRepository;
 
 namespace SandS.Controllers
 {
     [Area("Admin")]
-    public class LandingPageController : BaseClass
+    public class LandingPageController : BaseContoller
     {
         private readonly IUnityOfWork _unityofwork;
-        public LandingPageController(IUnityOfWork unityofwork)
+        public LandingPageController(IUnityOfWork unityofwork, IToastNotification toast) 
+            :base(unityofwork, toast)
         {
             _unityofwork = unityofwork;
         }
@@ -16,9 +18,7 @@ namespace SandS.Controllers
         // GET: LandingPageController
         public ActionResult LangingView()
         {
-
             ViewBag.sList = ServicesGet();
-
             ViewBag.Laundry = _unityofwork.Product.GetFirstOrDefault(x => x.ProductID == 1);
             ViewBag.HouseHolds = _unityofwork.Product.GetFirstOrDefault(x => x.ProductID == 2);
             ViewBag.Comforters = _unityofwork.Product.GetFirstOrDefault(x => x.ProductID == 3);

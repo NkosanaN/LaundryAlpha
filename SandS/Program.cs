@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+//using AspNetCoreHero.ToastNotification;
 using Service;
 using Service.Data;
 using Microsoft.AspNetCore.Identity;
@@ -9,6 +10,7 @@ using Service.Repository.IRepository;
 using Service.Repository;
 using Service.Dbinitializer;
 using Service.DbInitializer;
+using NToastNotify;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -100,7 +102,26 @@ builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 //});
 
 builder.Services.AddMemoryCache();
-builder.Services.AddMvc().AddNToastNotifyToastr();
+
+builder.Services.AddMvc().AddNToastNotifyToastr
+    (
+        new ToastrOptions()
+        {
+            ExtendedTimeOut = 3000
+        },
+        new NToastNotifyOption()
+        {
+            ScriptSrc = "/lib/toastr/toastr.min.js",
+            StyleHref = "/lib/toastr/toastr.min.css"
+        }
+    );
+
+//builder.Services.AddNToastNotifyToastr(config =>
+//{
+//    config.DurationInSeconds = 100;
+//    config.IsDismissable = true;
+//    config.Position = NotyfPosition.TopRight;
+//});
 
 var app = builder.Build();
 
@@ -117,10 +138,11 @@ app.UseDeveloperExceptionPage();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseNToastNotify();
 app.UseRouting();
 
 StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
-//SeedDatabase();
+SeedDatabase();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();

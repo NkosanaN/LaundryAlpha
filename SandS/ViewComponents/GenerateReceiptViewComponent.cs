@@ -1,32 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Model;
 using Newtonsoft.Json;
-using NToastNotify;
-using SandS.Helpers;
 using SandS.Models;
 using Service;
-
 using Service.Repository.IRepository;
 
-namespace SandS.Controllers
+namespace S_and_S.ViewComponents
 {
-    [Area("Customers")]
-    public class DebtorController : BaseContoller
+    public class GenerateReceiptViewComponent : ViewComponent
     {
         private readonly IUnityOfWork _unityofwork;
-
-        public DebtorController(IUnityOfWork unityofwork,
-           IToastNotification toast) :base(unityofwork, toast)
+        public GenerateReceiptViewComponent(IUnityOfWork unityofwork)
         {
             _unityofwork = unityofwork;
         }
-        // GET: CustomerController
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        public ActionResult GenerateReceipt(string customerinfo, string selectedlines)
+        public IViewComponentResult Invoke(string customerinfo, string selectedlines)
         {
             GenerateReceiptViewModel receipt = new();
             try
@@ -61,12 +49,10 @@ namespace SandS.Controllers
 
                 receipt.customer = customer;
                 receipt.product = products;
+
                 ViewBag.ReceiptNr = code;
 
-                AddToastMessage("Successful created new Order", MessageTypes.mtSuccess);
-
-                Notify("Successful created new Order", type: NotificationType.error);
-                return PartialView("_GenerateReceipt", receipt);
+                return View(receipt);
 
                 //var potrait = new ViewAsPdf(receipt)
                 //{
@@ -83,23 +69,5 @@ namespace SandS.Controllers
             }
 
         }
-
-        //public ActionResult PostPO(string customerinfo, string selectedlines)
-        //{
-        //    try
-        //    {
-        //        var customer = JsonConvert.DeserializeObject<Debtors>(customerinfo);
-        //        var service = JsonConvert.DeserializeObject<List<Product>>(selectedlines);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex.Message);
-        //        throw;
-        //    }
-
-
-        //    return Ok();
-        //}
     }
 }
