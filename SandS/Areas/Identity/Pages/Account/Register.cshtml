@@ -3,7 +3,7 @@
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
-    Layout = "~/Areas/Identity/Pages/_AuthLayout.cshtml";
+    Layout = "_Layout.cshtml";
 }
 @if (User.IsInRole(UtilityConstant.Role_User_Admin))
 {
@@ -15,7 +15,7 @@ else
 }
 
 <div class="col-md-10 offset-md-1 mt-3">
-    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" asp-page-handler="Register">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <div class="row">
@@ -123,7 +123,8 @@ else
 
 @section Scripts {
 <partial name="_ValidationScriptsPartial" />
-
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 
 <script>
     $(document).ready(function(){

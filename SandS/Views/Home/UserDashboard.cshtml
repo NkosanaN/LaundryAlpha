@@ -1,0 +1,116 @@
+﻿@model IEnumerable<Model.OrderHeader>
+@{
+    Layout = "~/Views/Shared/_LayoutArea.cshtml";
+    //Layout = null;
+}
+
+<h1 class="bg-black">Testing dashboard</h1>
+
+<style>
+
+    /* Style the search box */
+    #mySearch {
+        width: 100%;
+        font-size: 18px;
+        padding: 11px;
+        border: 1px solid #ddd;
+    }
+
+    /* Style the navigation menu */
+    #myMenu {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        /* Style the navigation links */
+        #myMenu li a {
+            padding: 12px;
+            text-decoration: none;
+            color: black;
+            display: block
+        }
+
+            #myMenu li a:hover {
+                background-color: #eee;
+            }
+
+    .mhrow {
+        display: flex;
+    }
+    .mhleft{
+        flex: 1%;
+        padding : 15px 0;
+    }
+    .mhright{
+        flex:65%;
+        padding: 15px 23px 
+    }
+    .gradient {
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(49,49,124,1) 38%, rgba(0,212,255,1) 99%);
+}
+</style>
+
+<div class="mhrow ">
+    <div class="mhleft " style="background-color:#bbb;color:black">
+        <h2>Menu</h2>
+        <input type="text" id="mySearch" onkeyup="myFunction()" placeholder="Search.." title="Type in a category">
+        <ul id="myMenu">
+            <li><a href="#home"><i class="fa fa-fw fa-home"></i>Progres</a></li>
+            <li><a href="#services"><i class="fa fa-fw fa-wrench"></i>Service</a></li>
+            <li><a href="#loyaty"><i class="fa fa-fw fa-wrench"></i>View loyalty Point</a></li>
+
+            <li><a href="#">Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="mhright">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table " id="tblUserLaundry">
+                    <thead class="btn-secondary">
+                        <tr>
+                            <th>Name</th>
+                            <th>Surname</th>
+                            <th>Item Number</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<partial name="_ModalConfirm" view-data="ViewData" />
+@section Scripts {
+
+    <script>
+        function myFunction() {
+            // Declare variables
+            var input, filter, ul, li, a, i;
+            input = document.getElementById("mySearch");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("myMenu");
+            li = ul.getElementsByTagName("li");
+
+            // Loop through all list items, and hide those who don't match the search query
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName("a")[0];
+                if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+
+    <script src="~/js/userdashboard.js" asp-append-version="true"></script>
+    <script src="~/js/base.js" type="text/javascript"></script>
+    <script src="~/js/admin.js" type="text/javascript"></script>
+    <script src="~/js/customer.js" type="text/javascript"></script>
+}

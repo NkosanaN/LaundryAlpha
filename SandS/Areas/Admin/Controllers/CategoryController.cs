@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Model;
@@ -16,15 +17,17 @@ using System.Security.Claims;
 namespace SandS.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = UtilityConstant.Role_User_Admin)]
+    //[Authorize(Roles = UtilityConstant.Role_User_Admin)]
     public class CategoryController : BaseContoller
     {
         private readonly IUnityOfWork _unityofwork;
+        private readonly UserManager<IdentityUser> _signInManager;
 
-        public CategoryController(IUnityOfWork unityofwork,
-            IToastNotification toast):base(unityofwork, toast)
+
+        public CategoryController(IUnityOfWork unityofwork,UserManager<IdentityUser> signInManager) : base(unityofwork, signInManager)
         {
             _unityofwork = unityofwork;
+            _signInManager = signInManager;
         }
         public ActionResult Index()
         {
@@ -73,7 +76,7 @@ namespace SandS.Controllers
                     OrdHeaderCode = code, 
                     Name = customer.FirstName,
                     Surname = customer.LastName,
-                    Email = customer.Email,
+                    Email = Email,
                     ItemNr = products.Count,
                     TotalLine = products.Select(x => x.ListPrice).Sum(),
                     OrderLine = new()

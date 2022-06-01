@@ -11,13 +11,20 @@ using Service.Repository;
 using Service.Dbinitializer;
 using Service.DbInitializer;
 using NToastNotify;
+using S_and_S.Hubs;
+using S_and_S.MiddlewareExtensions;
+using S_and_S.SubscribeTableDependencies;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Environment.EnvironmentName = Environments.Production;
+//builder.Environment.EnvironmentName = Environments.Production;
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSignalR();
+
+
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -38,6 +45,12 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
+//builder.Services.AddAntiforgery(options =>
+//{
+//    options.Cookie.Name = "X-CSRF-TOKEN-MOONGLADE";
+//    options.FormFieldName = "CSRF-TOKEN-MOONGLADE-FORM";
+//});
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -66,8 +79,10 @@ builder.Services.AddMvc()
 
 builder.Services.AddScoped<IUnityOfWork, UnityOfWork>();
 //NB: Nkosana
-builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+//builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
+builder.Services.AddScoped<DashboardHub>();
+builder.Services.AddScoped<SubscribePendingLaundryDependency>();
 
 //builder.Services.Configure<IdentityOptions>(options =>
 //{
@@ -102,26 +117,8 @@ builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 //});
 
 builder.Services.AddMemoryCache();
-
-builder.Services.AddMvc().AddNToastNotifyToastr
-    (
-        new ToastrOptions()
-        {
-            ExtendedTimeOut = 3000
-        },
-        new NToastNotifyOption()
-        {
-            ScriptSrc = "/lib/toastr/toastr.min.js",
-            StyleHref = "/lib/toastr/toastr.min.css"
-        }
-    );
-
-//builder.Services.AddNToastNotifyToastr(config =>
-//{
-//    config.DurationInSeconds = 100;
-//    config.IsDismissable = true;
-//    config.Position = NotyfPosition.TopRight;
-//});
+builder.Services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 var app = builder.Build();
 
@@ -138,13 +135,17 @@ app.UseDeveloperExceptionPage();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseNToastNotify();
+//app.UseNToastNotify();
 app.UseRouting();
 
 StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
-SeedDatabase();
+//SeedDatabase();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCookiePolicy();
+
+app.MapHub<DashboardHub>("/dashboardHub");
+
 app.UseSession();
 
 app.MapRazorPages(); //NB :  needed  for Razor pages for routing i.e Identity 
@@ -162,6 +163,9 @@ pattern: "{controller=Home}/{action=Index}/{id?}");
 var contentRoot = app.Environment.WebRootPath;
 
 Rotativa.AspNetCore.RotativaConfiguration.Setup(contentRoot, "rotativa");
+
+
+//app.UsePendingLaundry();
 
 app.Run();
 

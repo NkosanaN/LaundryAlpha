@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Model
@@ -18,6 +19,8 @@ namespace Model
         [Display(Name = "Total")]
         public double TotalLine { get; set; }
         public bool isCompleted { get; set; }
+
+        [ValidateNever]
         public List<OrderDetail> OrderLine { get; set; } = new List<OrderDetail>();
     }
 }

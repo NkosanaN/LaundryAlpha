@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Model;
 
@@ -17,7 +18,6 @@ namespace Service.Data
         public DbSet<Debtors> Customer { get; set; }
         public DbSet<OrderHeader> OrderHeader { get; set; }
         public DbSet<OrderDetail> OrderDetail { get; set; }
-
         public DbSet<AuditTray> AuditTray { get; set; }
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{

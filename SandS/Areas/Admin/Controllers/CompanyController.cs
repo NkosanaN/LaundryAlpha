@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Model;
 using NToastNotify;
 using SandS.Helpers;
@@ -12,14 +13,14 @@ namespace SandS.Areas.Admin.Controllers
     public class CompanyController : BaseContoller
     {
         private readonly IUnityOfWork _unityofwork;
-
+        private readonly UserManager<IdentityUser> _signInManager;
         //private readonly ILogger _logger;
-        public CompanyController(IUnityOfWork unityofwork,
-            IToastNotification toast
+        public CompanyController(IUnityOfWork unityofwork, UserManager<IdentityUser> signInManager
             /*,IHostingEnvironment hosting,ILogger logger*/)
-            : base(unityofwork, toast)
+            : base(unityofwork, signInManager)
         {
             _unityofwork = unityofwork;
+            _signInManager = signInManager;
             //_logger = logger;
         }
         // GET: CompanyController
@@ -97,6 +98,15 @@ namespace SandS.Areas.Admin.Controllers
 
             }
             return RedirectToAction("Index");
+        }
+
+
+        [HttpGet]
+        public ActionResult GetAll() 
+        {
+            var model = _unityofwork.Company.GetAll();
+
+            return Ok(model);
         }
     }
 }

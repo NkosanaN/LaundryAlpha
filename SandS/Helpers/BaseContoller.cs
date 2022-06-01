@@ -1,17 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Model;
 using Newtonsoft.Json;
 using NToastNotify;
 using Service.Repository.IRepository;
+using System.Security.Claims;
 
 namespace SandS.Helpers
 {
     public class BaseContoller : Controller
     {
+        private ApplicationUser _getsignuser { get; set; }
+        private readonly UserManager<IdentityUser> _signInManager;
         private readonly IUnityOfWork _unityofwork;
-        private readonly IToastNotification toastNotification;
         public enum MessageTypes { mtInfo, mtWarning, mtError, mtAlert, mtSuccess }
         public enum NotificationType { error, success, warning }
+  
         public SelectList ServicesGet()
         {
             var stypes = new List<string>
@@ -23,11 +28,28 @@ namespace SandS.Helpers
             return new SelectList(stypes);
         }
 
-        public BaseContoller(IUnityOfWork unityofwork, IToastNotification toaster)
+        public BaseContoller(IUnityOfWork unityofwork, UserManager<IdentityUser> signInManager)
         {
             _unityofwork = unityofwork;
-            toastNotification = toaster;
+            _signInManager = signInManager;
         }
+        public ApplicationUser GetSignUser
+        {
+            get
+            {
+                if (_getsignuser == null)
+                {
+                    ApplicationUser applicationUser = (ApplicationUser)_signInManager.GetUserAsync(User).Result;
+                    _getsignuser = applicationUser;
+                }
+                return _getsignuser;
+            }
+        }
+        public string Name => GetSignUser.Name;
+        public string Email => GetSignUser.Email;
+        public string PhoneNumber => GetSignUser.PhoneNumber;
+        public string StreetAddress => GetSignUser.StreetAddress;
+
         public void Notify(string msg, 
                            string title = "Sweet Alert Toastr Demo",
                            NotificationType type = NotificationType.success)
@@ -53,30 +75,6 @@ namespace SandS.Helpers
             IConfiguration configuration = builder.Build();
             var value = configuration["NotificationProvider"];
             return value;
-        }
-        public void AddToastMessage(string msg, MessageTypes type = 0)
-        {
-            var options = new ToastrOptions { TapToDismiss = true, CloseButton = true, TimeOut = 5000 };
-            switch (type)
-            {
-                case MessageTypes.mtAlert:
-                    toastNotification.AddAlertToastMessage(msg, options);
-                    break;
-                case MessageTypes.mtError:
-                    options.TimeOut = 0;
-                    toastNotification.AddErrorToastMessage(msg, options);
-                    break;
-                case MessageTypes.mtSuccess:
-                    toastNotification.AddSuccessToastMessage(msg, options);
-                    break;
-                case MessageTypes.mtWarning:
-                    options.TimeOut = 0;
-                    toastNotification.AddWarningToastMessage(msg, options);
-                    break;
-                default:
-                    toastNotification.AddInfoToastMessage(msg, options);
-                    break;
-            }
         }
     }
 }

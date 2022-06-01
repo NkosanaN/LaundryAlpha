@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Model;
 using NToastNotify;
 using SandS.Helpers;
 using Service.Repository.IRepository;
@@ -9,10 +11,13 @@ namespace SandS.Controllers
     public class LandingPageController : BaseContoller
     {
         private readonly IUnityOfWork _unityofwork;
-        public LandingPageController(IUnityOfWork unityofwork, IToastNotification toast) 
-            :base(unityofwork, toast)
+        private readonly UserManager<IdentityUser> _signInManager;
+
+        public LandingPageController(IUnityOfWork unityofwork, UserManager<IdentityUser> signInManager)
+            : base(unityofwork, signInManager)
         {
             _unityofwork = unityofwork;
+            _signInManager = signInManager;
         }
 
         // GET: LandingPageController

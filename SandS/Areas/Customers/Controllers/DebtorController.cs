@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Model;
 using Newtonsoft.Json;
 using NToastNotify;
@@ -14,11 +15,11 @@ namespace SandS.Controllers
     public class DebtorController : BaseContoller
     {
         private readonly IUnityOfWork _unityofwork;
-
-        public DebtorController(IUnityOfWork unityofwork,
-           IToastNotification toast) :base(unityofwork, toast)
+        private readonly UserManager<IdentityUser> _signInManager;
+        public DebtorController(IUnityOfWork unityofwork, UserManager<IdentityUser> signInManager) :base(unityofwork, signInManager)
         {
             _unityofwork = unityofwork;
+            _signInManager = signInManager;
         }
         // GET: CustomerController
         public ActionResult Index()
@@ -62,8 +63,6 @@ namespace SandS.Controllers
                 receipt.customer = customer;
                 receipt.product = products;
                 ViewBag.ReceiptNr = code;
-
-                AddToastMessage("Successful created new Order", MessageTypes.mtSuccess);
 
                 Notify("Successful created new Order", type: NotificationType.error);
                 return PartialView("_GenerateReceipt", receipt);

@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/Shared/_LayoutArea.cshtml";
+}
+
+<h1 class="mt-3">Admin</h1>
+
+<div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h4>Laundry Still in Processing</h4>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="x_content">
+                    <table class="table table-striped" id="tblPendingLaundry">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Ord Hearder Code</th>
+                                <th>Name</th>
+                                <th>Surname</th>
+@*                                <th>Email</th>
+*@                                <th>Total</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts{
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/admindashboard.js"></script>
+}

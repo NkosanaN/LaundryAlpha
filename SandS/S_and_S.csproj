@@ -31,6 +31,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.3" />
     <PackageReference Include="NToastNotify" Version="8.0.0" />
     <PackageReference Include="rotativa.AspNetCore" Version="1.2.0" />
+    <PackageReference Include="SqlTableDependency" Version="8.5.8" />
     <PackageReference Include="Stripe.net" Version="39.106.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
@@ -39,10 +40,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Service\Service.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Home\Controllers\" />
   </ItemGroup>
 
 </Project>

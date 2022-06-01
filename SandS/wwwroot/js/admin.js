@@ -17,7 +17,6 @@ $('#adminviewsummary').on('click', function () {
 })
 $('#adminModalToggle').on('show.bs.modal', function (e) {
 
-
     $('#AdminformBackdrop').modal('hide');
     $('#staticBackdrop').modal('hide');
 

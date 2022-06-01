@@ -62,10 +62,10 @@ namespace Service.DbInitializer
                 }, "Admin123*").GetAwaiter().GetResult();
 
                 //We need to retrieve created Admin
-                ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "admin@dotnet.com");
+              //  ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "admin@dotnet.com");
 
                 //Assigned user to role
-                _userManager.AddToRoleAsync(user, UtilityConstant.Role_User_Admin).GetAwaiter().GetResult();
+                //_userManager.AddToRoleAsync(user, UtilityConstant.Role_User_Admin).GetAwaiter().GetResult();
                 PopulateMissingV();
             }
             return;
