@@ -1,116 +1,173 @@
-﻿@model IEnumerable<Model.OrderHeader>
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<Model.ApplicationUser> UserManager
 @{
     Layout = "~/Views/Shared/_LayoutArea.cshtml";
-    //Layout = null;
+    int OrderNr = (int?)ViewBag.NumberOfOrder == null ? 0 : (int)ViewBag.NumberOfOrder;
 }
 
 <h1 class="bg-black">Testing dashboard</h1>
 
 <style>
 
-    /* Style the search box */
-    #mySearch {
-        width: 100%;
-        font-size: 18px;
-        padding: 11px;
-        border: 1px solid #ddd;
+    /* Style the tab */
+    .tab {
+        float: left;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+        width: 10%;
+        height: 450px;
     }
 
-    /* Style the navigation menu */
-    #myMenu {
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-    }
-
-        /* Style the navigation links */
-        #myMenu li a {
-            padding: 12px;
-            text-decoration: none;
+        /* Style the buttons that are used to open the tab content */
+        .tab button {
+            display: block;
+            background-color: inherit;
             color: black;
-            display: block
+            padding: 22px 16px;
+            width: 100%;
+            border: none;
+            outline: none;
+            text-align: left;
+            cursor: pointer;
         }
 
-            #myMenu li a:hover {
-                background-color: #eee;
+            /* Change background color of buttons on hover */
+            .tab button:hover {
+                background-color: #ddd;
             }
 
-    .mhrow {
-        display: flex;
+            /* Create an active/current "tab button" class */
+            .tab button.active {
+                background-color: #ccc;
+            }
+
+    /* Style the tab content */
+    .tabcontent {
+        float: left;
+        padding: 0px 12px;
+        border: 1px solid #ccc;
+        width: 70%;
+        border-left: none;
+        height: 450px;
+        display: none;
     }
-    .mhleft{
-        flex: 1%;
-        padding : 15px 0;
-    }
-    .mhright{
-        flex:65%;
-        padding: 15px 23px 
-    }
-    .gradient {
-    background: rgb(2,0,36);
-    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(49,49,124,1) 38%, rgba(0,212,255,1) 99%);
-}
+
 </style>
+<div class="container-fluid">
+    <div class="tab">
+        <h2>Hello @UserManager.GetUserAsync(User).Result.FirstName</h2>
 
-<div class="mhrow ">
-    <div class="mhleft " style="background-color:#bbb;color:black">
-        <h2>Menu</h2>
         <input type="text" id="mySearch" onkeyup="myFunction()" placeholder="Search.." title="Type in a category">
-        <ul id="myMenu">
-            <li><a href="#home"><i class="fa fa-fw fa-home"></i>Progres</a></li>
-            <li><a href="#services"><i class="fa fa-fw fa-wrench"></i>Service</a></li>
-            <li><a href="#loyaty"><i class="fa fa-fw fa-wrench"></i>View loyalty Point</a></li>
 
-            <li><a href="#">Logout</a></li>
-        </ul>
-    </div>
-
-    <div class="mhright">
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table " id="tblUserLaundry">
-                    <thead class="btn-secondary">
-                        <tr>
-                            <th>Name</th>
-                            <th>Surname</th>
-                            <th>Item Number</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+        <div>
+            <button class="tablinks" onmouseover="openMenu(event, 'Home')"><i class="fa fa-fw fa-wrench tablink"></i>Home</button>
+            <button class="tablinks" onmouseover="openMenu(event, 'Progres')">Progres</button>
+            <button class="tablinks" onmouseover="openMenu(event, 'viewloyaltypoint')">View loyalty Point</button>
+            <button class="tablinks" onclick="Logout()">Logout</button>
         </div>
     </div>
+    <div id="Home" class="tabcontent">
+        @if (OrderNr == 0)
+        {
 
+                  @*  <h5 class="card-title">Nothing on Basket</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+*@                    @await Component.InvokeAsync("Test","Admin Create Order")
+@*
+            <div class="container mt-4">
+                <h4 class="my-3 text-center">Nothing on Basket</h4>
+            </div>*@
+        }
+        else
+        {
+            <div class="container mt-4">
+                <h3 class="my-3 text-center">Easy <span class="text-info">Way</span></h3>
+                <div id="stepProgressBar">
+                    <div class="step">
+                        <div class="step-text">Step 1</div>
+                        <div class="bullet">1</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-text">Step 2</div>
+                        <div class="bullet ">2</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-text">Step 3</div>
+                        <div class="bullet">3</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-text">Step 4</div>
+                        <div class="bullet">4</div>
+                    </div>
+                </div>
 
+            </div>
+
+            <table class="table " id="tblUserLaundry" width="100%">
+                <thead class="btn-secondary">
+                    <tr>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Item Number</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+            </table>
+
+            @*        <div id="main">
+        <p id="content">Step Number 1</p>
+        <button id="previousBtn" disabled>Previous</button>
+        <button id="nextBtn">Next</button>
+        <button id="finishBtn" disabled>Finish</button>
+        </div>*@
+        }
+    </div>
+    <div id="Progres" class="tabcontent">
+@*        <h3>Paris</h3>
+        <p>Paris is the capital of France.</p>*@
+    </div>
+
+    <div id="viewloyaltypoint" class="tabcontent">
+ @*       <h3>Tokyo</h3>
+        <p>Tokyo is the capital of Japan.</p>*@
+    </div>
 </div>
 
 <partial name="_ModalConfirm" view-data="ViewData" />
 @section Scripts {
+        <script src="~/js/userdashboard.js" asp-append-version="true"></script>
+    <script src="~/js/base.js" type="text/javascript"></script>
+    <script src="~/js/admin.js" type="text/javascript" ></script>
+    <script src="~/js/customer.js" type="text/javascript"></script>
 
-    <script>
-        function myFunction() {
-            // Declare variables
-            var input, filter, ul, li, a, i;
-            input = document.getElementById("mySearch");
-            filter = input.value.toUpperCase();
-            ul = document.getElementById("myMenu");
-            li = ul.getElementsByTagName("li");
+    <script type="text/javascript">
+        function openMenu(evt, cityName) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
 
-            // Loop through all list items, and hide those who don't match the search query
-            for (i = 0; i < li.length; i++) {
-                a = li[i].getElementsByTagName("a")[0];
-                if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                    li[i].style.display = "";
-                } else {
-                    li[i].style.display = "none";
-                }
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
             }
+
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the current tab, and add an "active" class to the link that opened the tab
+            document.getElementById(cityName).style.display = "block";
+            evt.currentTarget.className += " active";
         }
+
+        function Logout() {
+            window.location.href = "/UserAuth/Logout";
+        }
+
     </script>
 
-    <script src="~/js/userdashboard.js" asp-append-version="true"></script>
-    <script src="~/js/base.js" type="text/javascript"></script>
-    <script src="~/js/admin.js" type="text/javascript"></script>
-    <script src="~/js/customer.js" type="text/javascript"></script>
+
 }

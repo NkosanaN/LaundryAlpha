@@ -13,9 +13,9 @@ namespace S_and_S.Controllers
     public class HomeController : BaseContoller
     {
         private readonly IUnityOfWork _unityofwork;
-        private readonly UserManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _signInManager;
 
-        public HomeController(IUnityOfWork unityOfWork, UserManager<IdentityUser> signInManager) :base(unityOfWork, signInManager)
+        public HomeController(IUnityOfWork unityOfWork, UserManager<ApplicationUser> signInManager) :base(unityOfWork, signInManager)
         {
             _unityofwork = unityOfWork;
             _signInManager = signInManager;
@@ -43,8 +43,7 @@ namespace S_and_S.Controllers
         public ActionResult UserDashboard() 
         {
             ViewData["isExternalUser"] = true;
-            //_unityofwork.OrderHeader.GetAll("OrderDetail,Category")
-           
+            getOrderList();
             return View();
         }
         public IActionResult AdminDashboard()
@@ -52,13 +51,17 @@ namespace S_and_S.Controllers
             //return RedirectToAction("Index", "Category", new { area = "Admin" });
             return View();
         }
-
-        public IActionResult getUserData() 
+        public IEnumerable<OrderHeader> getOrderList() 
         {
             var getUserOrders = _unityofwork.OrderHeader.GetAll("OrderLine")
                                .Where(x => x.Email.ToLower() == Email.ToLower());
+            ViewBag.NumberOfOrder = getUserOrders.Count();
+            return getUserOrders;
+        }
 
-            return Json(getUserOrders);
+        public IActionResult getUserData() 
+        {
+            return Json(getOrderList());
         }
         public IActionResult Privacy()
         {

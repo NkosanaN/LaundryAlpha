@@ -11,12 +11,12 @@ using Service.Repository.IRepository;
 
 namespace SandS.Controllers
 {
-    [Area("Customers")]
+   [Area("Customers")]
     public class DebtorController : BaseContoller
     {
         private readonly IUnityOfWork _unityofwork;
-        private readonly UserManager<IdentityUser> _signInManager;
-        public DebtorController(IUnityOfWork unityofwork, UserManager<IdentityUser> signInManager) :base(unityofwork, signInManager)
+        private readonly UserManager<ApplicationUser> _signInManager;
+        public DebtorController(IUnityOfWork unityofwork, UserManager<ApplicationUser> signInManager) :base(unityofwork, signInManager)
         {
             _unityofwork = unityofwork;
             _signInManager = signInManager;
@@ -26,22 +26,21 @@ namespace SandS.Controllers
         {
             return View();
         }
-
-        public ActionResult GenerateReceipt(string customerinfo, string selectedlines)
+        public ActionResult GenerateReceipt(string selectedlines)
         {
             GenerateReceiptViewModel receipt = new();
+
             try
             {
-                var customer = JsonConvert.DeserializeObject<Debtors>(customerinfo);
                 var products = JsonConvert.DeserializeObject<List<Product>>(selectedlines);
                 string code = RandomString.GenerateOrderCode(5);
 
                 OrderHeader header = new OrderHeader()
                 {
                     OrdHeaderCode = code,
-                    Name = customer.FirstName,
-                    Surname = customer.LastName,
-                    Email = customer.Email,
+                    FirstName = FirstName,
+                    Surname = LastName,
+                    Email = Email,
                     ItemNr = products.Count,
                     TotalLine = products.Select(x => x.ListPrice).Sum(),
                     OrderLine = new()
@@ -58,22 +57,14 @@ namespace SandS.Controllers
                         Price = products[i].ListPrice,
                     });
                 }
-                //_unityofwork.Save();
+                _unityofwork.Save();
 
-                receipt.customer = customer;
-                receipt.product = products;
-                ViewBag.ReceiptNr = code;
+                //receipt.customer = customer;
+                //receipt.product = products;
+                //ViewBag.ReceiptNr = code;
 
-                Notify("Successful created new Order", type: NotificationType.error);
-                return PartialView("_GenerateReceipt", receipt);
-
-                //var potrait = new ViewAsPdf(receipt)
-                //{
-                //    FileName = "receipt.pdf",
-                //    PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
-                //    PageSize = Rotativa.AspNetCore.Options.Size.A4
-                //};
-                //return potrait;
+                Notify("Successful created new Order", type: NotificationType.success);
+                return RedirectToAction("UserDashboard", "Home", new { area = "" });
             }
             catch (Exception ex)
             {

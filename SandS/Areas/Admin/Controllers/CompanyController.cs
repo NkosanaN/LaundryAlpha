@@ -13,9 +13,9 @@ namespace SandS.Areas.Admin.Controllers
     public class CompanyController : BaseContoller
     {
         private readonly IUnityOfWork _unityofwork;
-        private readonly UserManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _signInManager;
         //private readonly ILogger _logger;
-        public CompanyController(IUnityOfWork unityofwork, UserManager<IdentityUser> signInManager
+        public CompanyController(IUnityOfWork unityofwork, UserManager<ApplicationUser> signInManager
             /*,IHostingEnvironment hosting,ILogger logger*/)
             : base(unityofwork, signInManager)
         {

@@ -21,10 +21,9 @@ namespace SandS.Controllers
     public class CategoryController : BaseContoller
     {
         private readonly IUnityOfWork _unityofwork;
-        private readonly UserManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _signInManager;
 
-
-        public CategoryController(IUnityOfWork unityofwork,UserManager<IdentityUser> signInManager) : base(unityofwork, signInManager)
+        public CategoryController(IUnityOfWork unityofwork,UserManager<ApplicationUser> signInManager) : base(unityofwork, signInManager)
         {
             _unityofwork = unityofwork;
             _signInManager = signInManager;
@@ -73,8 +72,8 @@ namespace SandS.Controllers
 
                 OrderHeader header = new OrderHeader()
                 {
-                    OrdHeaderCode = code, 
-                    Name = customer.FirstName,
+                    OrdHeaderCode = code,
+                    FirstName = customer.FirstName,
                     Surname = customer.LastName,
                     Email = Email,
                     ItemNr = products.Count,
@@ -128,7 +127,7 @@ namespace SandS.Controllers
 
                 OrderHeader header = new OrderHeader()
                 {
-                    Name = customer.FirstName,
+                    FirstName = customer.FirstName,
                     Surname = customer.LastName,
                     Email = customer.Email,
                     ItemNr = products.Count,

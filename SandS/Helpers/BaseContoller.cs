@@ -12,7 +12,7 @@ namespace SandS.Helpers
     public class BaseContoller : Controller
     {
         private ApplicationUser _getsignuser { get; set; }
-        private readonly UserManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _signInManager;
         private readonly IUnityOfWork _unityofwork;
         public enum MessageTypes { mtInfo, mtWarning, mtError, mtAlert, mtSuccess }
         public enum NotificationType { error, success, warning }
@@ -28,7 +28,7 @@ namespace SandS.Helpers
             return new SelectList(stypes);
         }
 
-        public BaseContoller(IUnityOfWork unityofwork, UserManager<IdentityUser> signInManager)
+        public BaseContoller(IUnityOfWork unityofwork, UserManager<ApplicationUser> signInManager)
         {
             _unityofwork = unityofwork;
             _signInManager = signInManager;
@@ -45,7 +45,8 @@ namespace SandS.Helpers
                 return _getsignuser;
             }
         }
-        public string Name => GetSignUser.Name;
+        public string FirstName => GetSignUser.FirstName;
+        public string LastName => GetSignUser.LastName;
         public string Email => GetSignUser.Email;
         public string PhoneNumber => GetSignUser.PhoneNumber;
         public string StreetAddress => GetSignUser.StreetAddress;

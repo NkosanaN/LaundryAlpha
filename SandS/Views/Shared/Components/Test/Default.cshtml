@@ -8,11 +8,16 @@
 
 <div class="card mt-2">
     <div class="card-header">
-        <div class="col-md-2">
-            <select asp-for="@Model.Catergory" id="Catergory" class="form-control" asp-items="@(SelectList)ViewBag.sList">
-                <option disabled selected>-select-</option>
-            </select>
-            <span asp-validation-for="@Model.Catergory" class="text-danger"></span>
+        <div class="row g-3">
+            <div class="col">
+                <label>Choose Category</label>
+            </div>
+            <div class="col-md-2">
+                <select asp-for="@Model.Catergory" id="Catergory" class="form-control" asp-items="@(SelectList)ViewBag.sList">
+                    <option disabled selected>-Select-</option>
+                </select>
+                <span asp-validation-for="@Model.Catergory" class="text-danger"></span>
+            </div>
         </div>
     </div>
     <div class="card-body">
@@ -100,10 +105,10 @@
         </table>
     </div>
     <div class="card-footer text-muted">
-        <a asp-action="Index" 
-        class="btn btn-outline-secondary"  
-        data-bs-target="#adminModalToggle"
-        id="adminviewsummary"
-        data-bs-toggle="modal">View Summary</a>
+        <a asp-action="Index"
+           class="btn btn-outline-secondary"
+           data-bs-target="#adminModalToggle"
+           id="adminviewsummary"
+           data-bs-toggle="modal">View Summary</a>
     </div>
 </div>

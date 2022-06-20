@@ -53,11 +53,12 @@ namespace Service.DbInitializer
                 {
                     UserName = "admin@dotnet.com",
                     Email = "admin@dotnet.com",
-                    Name = "Nkosana Ndlela",
+                    FirstName = "Nkosana",
+                    LastName = "Ndlela",
                     PhoneNumber = "0733109576",
                     StreetAddress = "2437 Ave",
-                    State = "PTA",
-                    PostalCode = "0001",
+                    //State = "PTA",
+                    //PostalCode = "0001",
                     City = "PTA"
                 }, "Admin123*").GetAwaiter().GetResult();
 

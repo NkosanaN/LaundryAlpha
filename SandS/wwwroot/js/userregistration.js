@@ -53,8 +53,8 @@
         var user = {
             __RequestVerificationToken: antiForgeryToken,
             Email: email,
-            FirstName: "empty",
-            LastName: "empty",
+            FirstName: firstName,
+            LastName: lastName,
             Name: name,
             Password: password,
             ConfirmPassword: confirmPassword,

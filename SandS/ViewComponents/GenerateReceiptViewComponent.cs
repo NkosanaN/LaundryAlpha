@@ -26,7 +26,7 @@ namespace S_and_S.ViewComponents
                 OrderHeader header = new OrderHeader()
                 {
                     OrdHeaderCode = code,
-                    Name = customer.FirstName,
+                    FirstName = customer.FirstName,
                     Surname = customer.LastName,
                     Email = customer.Email,
                     ItemNr = products.Count,

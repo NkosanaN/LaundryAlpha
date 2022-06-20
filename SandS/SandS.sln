@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "..\Model\Model.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "..\Service\Service.csproj", "{6223DC8F-5799-4B69-9766-7004809D0AF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandSAPI", "..\SandSAPI\SandSAPI.csproj", "{6674AE98-3FFF-4C4A-81BE-709C597A2B43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SandSAPI", "..\SandSAPI\SandSAPI.csproj", "{6674AE98-3FFF-4C4A-81BE-709C597A2B43}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandS_Tests", "..\SandS_Tests\SandS_Tests.csproj", "{8391524D-C6CB-49C5-AA98-1B94E07F57E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{6674AE98-3FFF-4C4A-81BE-709C597A2B43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6674AE98-3FFF-4C4A-81BE-709C597A2B43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6674AE98-3FFF-4C4A-81BE-709C597A2B43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8391524D-C6CB-49C5-AA98-1B94E07F57E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8391524D-C6CB-49C5-AA98-1B94E07F57E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8391524D-C6CB-49C5-AA98-1B94E07F57E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8391524D-C6CB-49C5-AA98-1B94E07F57E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -11,9 +11,9 @@ namespace SandS.Controllers
     public class LandingPageController : BaseContoller
     {
         private readonly IUnityOfWork _unityofwork;
-        private readonly UserManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _signInManager;
 
-        public LandingPageController(IUnityOfWork unityofwork, UserManager<IdentityUser> signInManager)
+        public LandingPageController(IUnityOfWork unityofwork, UserManager<ApplicationUser> signInManager)
             : base(unityofwork, signInManager)
         {
             _unityofwork = unityofwork;

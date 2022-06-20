@@ -8,7 +8,7 @@ namespace Model
     {
         [Key]
         public string OrdHeaderCode { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public string FirstName { get; set; } = string.Empty;
         public string Surname { get; set; } = string.Empty;
 
         [DataType(DataType.EmailAddress),EmailAddress]

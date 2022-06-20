@@ -12,12 +12,12 @@ namespace S_and_S.Controllers
 {
     public class UserAuthController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ApplicationDbContext _context;
         public UserAuthController(ApplicationDbContext context,
-                                  UserManager<IdentityUser> userManager,
-                                  SignInManager<IdentityUser> signInManager)
+                                  UserManager<ApplicationUser> userManager,
+                                  SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -52,8 +52,8 @@ namespace S_and_S.Controllers
 
         }
         [AllowAnonymous]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout(string returnUrl = null)
         {
             await _signInManager.SignOutAsync();
@@ -83,8 +83,7 @@ namespace S_and_S.Controllers
                     FirstName = registrationModel.FirstName, 
                     LastName = registrationModel.LastName,
                     PhoneNumber = registrationModel.PhoneNumber,
-                    Name = registrationModel.Name,
-                    PostalCode = registrationModel.PostalCode,
+                    //PostalCode = registrationModel.PostalCode,
                     StreetAddress = registrationModel.StreetAddress,
                     City = registrationModel.City
                 };
@@ -109,7 +108,6 @@ namespace S_and_S.Controllers
                 }
 
                 AddErrorsToModelState(result);
-
             }
             ViewBag.LoginInValid = registrationModel.RegistrationInValid;
             return PartialView("_UserRegistrationPartial", registrationModel);

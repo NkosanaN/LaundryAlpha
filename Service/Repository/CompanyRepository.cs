@@ -12,7 +12,7 @@ namespace Service.Repository
         {
             _db = db;
         }
-        public voUpdate(Company company)
+        public void Update(Company company)
         {
             _db.Company.Update(company);
         }

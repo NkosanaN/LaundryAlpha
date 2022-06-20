@@ -170,15 +170,15 @@ namespace SandS.Areas.Identity.Pages.Account
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 user.StreetAddress = Input.StreetAddress;
                 user.City = Input.City;
-                user.PostalCode = Input.PostalCode;
+                //user.PostalCode = Input.PostalCode;
                 user.PhoneNumber = Input.PhoneNumber;
-                user.Name = Input.Name;
-                user.State = Input.State;
+                user.FirstName = Input.Name;
+              //  user.State = Input.State;
 
-                if(Input.Role == UtilityConstant.Role_User_Comp)
-                {
-                    user.CompanyId = Input.CompanyId;
-                }
+                //if(Input.Role == UtilityConstant.Role_User_Comp)
+                //{
+                //    user.CompanyId = Input.CompanyId;
+                //}
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)

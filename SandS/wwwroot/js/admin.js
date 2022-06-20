@@ -1,5 +1,6 @@
 ﻿var totalL = 0.00, totalB = 0.00; totalC = 0.00;
 var table;
+var identityModel
 $(document).ready(function () {
     $('#isCollection').prop('checked', true);
 });
@@ -90,18 +91,35 @@ function getSelectedRows() {
     return data;
 }
 
+
+function SaveTransaction(fromWhere)
+{
+    var custumerobj = {}
+    custumerobj["FirstName"] = $('.name').val();
+    custumerobj["LastName"] = $('.surname').val();
+    custumerobj["Email"] = $('.email').val();
+    custumerobj["PhoneNumber"] = $('.phoneNr').val();
+    custumerobj["StreetAddress"] = $('.address').val();
+    custumerobj["Category"] = $('#Catergory Option:Selected').text();
+    custumerobj["isCollected"] = $('#isCollection').is(':checked');
+    let pointURL = $('#RedirectTo').val();
+
+    if (fromWhere == "Individual") {
+        //window.location.href = pointURL + '/generatereceipt?customerinfo=' + JSON.stringify(custumerobj) + '&selectedlines=' + JSON.stringify(getSelectedRows()); 
+        window.location.href = pointURL + '/generatereceipt?selectedlines='+ JSON.stringify(getSelectedRows()); 
+    }
+    else if (fromWhere == "Admin")
+    {
+
+    }
+}
+
 $('#generateReceipt').on('click', function () {
 
     let v = $('#Catergory Option:Selected').text();
     console.log("Selected " + v);
 
-    var custumerobj = {}
-    custumerobj["FirstName"] = $('#inputName').val();
-    custumerobj["LastName"] = $('#Surname').val();
-    custumerobj["Email"] = $('#inputEmail').val();
-    custumerobj["MobilePhoneNumber"] = $('#MobilePhoneNumber').val();
-    custumerobj["Category"] = $('#Catergory Option:Selected').text();
-    custumerobj["isCollected"] = $('#isCollection').is(':checked');
+
     //custumerobj["StreetAddress1"] = $('#inputAddress').val() === "" ? "Mamelodi" : ('#inputAddress').val();
 
     //let u = '/viewcomponents/generatereceipt/invoke?customerinfo=' + JSON.stringify(custumerobj) + '&selectedlines=' + JSON.stringify(getSelectedRows());
