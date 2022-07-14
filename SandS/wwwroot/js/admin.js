@@ -5,12 +5,21 @@ $(document).ready(function () {
     $('#isCollection').prop('checked', true);
 });
 
+$('#includeDeliveryChckBox').on('change', function () {
+    if (!$(this).is(':checked'))
+        $('.includepaymentMsg').addClass('d-none');
+    else
+        $('.includepaymentMsg').removeClass('d-none');
+});
+
+
 $('#isCollection').on('change', function () {
     if ($(this).is(':checked'))
         $('.Address').addClass('d-none');
     else
         $('.Address').removeClass('d-none');
 });
+
 
 $('#adminModalToggle').on('show.bs.modal', function (e) {
 

@@ -64,8 +64,8 @@ function GetCustomerInformation() {
             $.each(r, function (i, items) {
              
                 html += "<tr><td>" + items.orderLine[i]["items"] +
-                    "</td><td>" + items.orderLine[i]["price"] +
-                    "</td></tr>";
+                        "</td><td>" + items.orderLine[i]["price"] +
+                        "</td></tr>";
                 total += parseFloat(items.orderLine[i]["price"]);
             });
             $('#total').text("Total  " + total.toFixed(2))

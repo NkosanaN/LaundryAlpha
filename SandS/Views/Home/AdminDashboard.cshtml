@@ -8,11 +8,6 @@
 <h1 class="mt-3">Admin</h1>
 
 <style>
-    .page {
-        background: rgb(2,0,36);
-        background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(49,49,124,1) 38%, rgba(0,212,255,1) 99%);
-    }
-
     #mySearch {
         width: 100%;
         font-size: 18px;
@@ -72,10 +67,10 @@
         <input type="text" id="mySearch" onkeyup="myFunction()" placeholder="Search.." title="Type in a category">
 
         <div>
-            <button class="tablinks" onclick="openMenu(event, 'Home')"><i class="fa fa-fw fa-wrench tablink"></i>Home</button>
-            <button class="tablinks" onclick="openMenu(event, 'basket')">Add to Basket</button>
+            <button class="tablinks" onclick="openMenu(event, 'Home')"><i class="fa fa-fw fa-wrench tablink"></i>&nbsp; Home</button>
+            <button class="tablinks" onclick="openMenu(event, 'basket')"><i class="fas fa-shopping-cart"></i> &nbsp; Add to Basket</button>
             @*           <button class="tablinks" onclick="openMenu(event, 'pdf')"><i class="fa fa-file-arrow-down"></i>Download Slip</button>*@
-            <button class="tablinks" onclick="Logout()"><i class="fa fa-right-from-bracket"></i>Logout</button>
+            <button class="tablinks" onclick="Logout()"><i class="fa fa-right-from-bracket"></i> &nbsp; Logout</button>
         </div>
     </div>
 

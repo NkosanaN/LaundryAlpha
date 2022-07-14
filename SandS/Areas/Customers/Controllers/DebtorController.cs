@@ -64,7 +64,7 @@ namespace SandS.Controllers
                 //receipt.product = products;
                 //ViewBag.ReceiptNr = code;
 
-                Notify("Successful created new Order","Successful", type: NotificationType.success);
+                Notify("Successful created new Order","Successful Created Order", type: NotificationType.success);
                 return RedirectToAction("UserDashboard", "Home", new { area = "" });
             }
             catch (Exception ex)
@@ -118,7 +118,12 @@ namespace SandS.Controllers
                 {
                     FileName = "Receipt.pdf",
                     PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
-                    PageSize = Rotativa.AspNetCore.Options.Size.A4
+                    PageSize = Rotativa.AspNetCore.Options.Size.A4,
+
+                    CustomSwitches = 
+                    "--footer-center \" Created Date : " + 
+                    DateTime.Now.Date.ToString("yyyy/MM/dd") + " Page: [page]/[toPage] \""+
+                    " --footer-line --footer-font-size \"12\" --footer-spacing 1 --footer-font-name \" Segoe UI\""
                 };
                 return potrait;
             }
