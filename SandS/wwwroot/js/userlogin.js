@@ -44,7 +44,8 @@
                     $.validator.unobtrusive.parse(form);
                 }
                 else {
-                    location.href = 'Home/UserDashboard'; 
+                    location.href = 'Home/AdminDashboard'; 
+                   //location.href = 'Home/UserDashboard'; 
                 }
             },
             error: function (xhr, ajaxOptions, thrownError) {

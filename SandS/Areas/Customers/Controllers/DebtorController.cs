@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Model;
 using Newtonsoft.Json;
 using NToastNotify;
+using Rotativa.AspNetCore;
 using SandS.Helpers;
 using SandS.Models;
 using Service;
@@ -63,7 +64,7 @@ namespace SandS.Controllers
                 //receipt.product = products;
                 //ViewBag.ReceiptNr = code;
 
-                Notify("Successful created new Order", type: NotificationType.success);
+                Notify("Successful created new Order","Successful", type: NotificationType.success);
                 return RedirectToAction("UserDashboard", "Home", new { area = "" });
             }
             catch (Exception ex)
@@ -74,22 +75,59 @@ namespace SandS.Controllers
 
         }
 
-        //public ActionResult PostPO(string customerinfo, string selectedlines)
-        //{
-        //    try
-        //    {
-        //        var customer = JsonConvert.DeserializeObject<Debtors>(customerinfo);
-        //        var service = JsonConvert.DeserializeObject<List<Product>>(selectedlines);
+        public ActionResult InvoicePdf()
+        {
+            GenerateReceiptViewModel receipt = new();
+            try
+            {
+               
+                string code = RandomString.GenerateOrderCode(5);
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex.Message);
-        //        throw;
-        //    }
+                //OrderHeader header = new OrderHeader()
+                //{
+                //    OrdHeaderCode = code,
+                //    FirstName = customer.FirstName,
+                //    Surname = customer.LastName,
+                //    Email = Email,
+                //    ItemNr = products.Count,
+                //    TotalLine = products.Select(x => x.ListPrice).Sum(),
+                //    OrderLine = new()
+                //};
+                //_unityofwork.OrderHeader.Add(header);
 
+                //for (int i = 0; i < products.Count; i++)
+                //{
+                //    _unityofwork.OrderDetail.Add(new OrderDetail()
+                //    {
+                //        OrdHeaderCode = code,
+                //        Count = i + 1,
+                //        Items = products[i].ProductName,
+                //        Price = products[i].ListPrice,
+                //    });
+                //}
+                ////_unityofwork.Save();
+                //receipt.customer = customer;
+                //receipt.product = products;
+                //ViewBag.ReceiptNr = code;
 
-        //    return Ok();
-        //}
+                //Notify("Successful created order", "Successful created order", type: NotificationType.success);
+                //return View("Index");
+
+            
+                var potrait = new ViewAsPdf()
+                {
+                    FileName = "Receipt.pdf",
+                    PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
+                    PageSize = Rotativa.AspNetCore.Options.Size.A4
+                };
+                return potrait;
+            }
+            catch (Exception ex)
+            {
+                //  _logger.LogError(ex.Message);
+                throw;
+            }
+
+        }
     }
 }

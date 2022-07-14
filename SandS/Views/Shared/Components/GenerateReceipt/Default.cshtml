@@ -1,4 +1,6 @@
 ﻿@using SandS.Models
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Model.ApplicationUser> UserManager
 @model GenerateReceiptViewModel
 @{
     Layout = null;
@@ -26,10 +28,10 @@
                 </td>
 
                 <td class="invoice-to">
-                    <strong>@Model.customer.FirstName</strong>   @Model.customer.LastName<br />
-                    @Model.customer.MobilePhoneNumber<br />
-                    @Model.customer.Email<br />
-                    @Model.customer.StreetAddress1<br />
+                    @UserManager.GetUserAsync(User).Result.FirstName  @UserManager.GetUserAsync(User).Result.LastName<br />
+                    @UserManager.GetUserAsync(User).Result.PhoneNumber<br />
+                    @UserManager.GetUserAsync(User).Result.Email<br />
+                    @UserManager.GetUserAsync(User).Result.StreetAddress<br />
                 </td>
 
                 <td class="invoice-details">
@@ -43,7 +45,7 @@
 
     </div>
 
-    <table class="SummaryTable clearfix">
+    @*<table class="SummaryTable clearfix">
         <tr>
             <th style="text-align:left">Product Name</th>
             <th>Price</th>
@@ -60,7 +62,7 @@
             <td class="col"> Total: </td>
             <td class="numeric-cell">@Model.product.Sum(x=>x.ListPrice).ToString("N2")</td>
         </tr>
-    </table>
+    </table>*@
 
     <table>
         <thead>

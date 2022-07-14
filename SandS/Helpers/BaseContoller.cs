@@ -15,7 +15,7 @@ namespace SandS.Helpers
         private readonly UserManager<ApplicationUser> _signInManager;
         private readonly IUnityOfWork _unityofwork;
         public enum MessageTypes { mtInfo, mtWarning, mtError, mtAlert, mtSuccess }
-        public enum NotificationType { error, success, warning }
+        public enum NotificationType { error, success, warning , info }
   
         public SelectList ServicesGet()
         {

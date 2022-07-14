@@ -142,16 +142,16 @@ $('#Catergory').on('change', function () {
 //    });
 //    return data;
 //}
-function getCustomerInfo()
-{
-    var custumerobj = {}
-    custumerobj["FirstName"] = $('#inputName').val();
-    custumerobj["LastName"] = $('#Surname').val();
-    custumerobj["Email"] = $('#inputEmail').val();
-    custumerobj["StreetAddress1"] = $('#inputAddress').val();
+//function getCustomerInfo()
+//{
+//    var custumerobj = {}
+//    custumerobj["FirstName"] = $('#inputName').val();
+//    custumerobj["LastName"] = $('#Surname').val();
+//    custumerobj["Email"] = $('#inputEmail').val();
+//    custumerobj["StreetAddress1"] = $('#inputAddress').val();
 
-    return JSON.stringify(custumerobj);
-}
+//    return JSON.stringify(custumerobj);
+//}
 
 $('#cart').on('click', function (e) {
     $('#exampleModalToggle2').modal('hide');

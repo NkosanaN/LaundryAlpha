@@ -23,7 +23,7 @@ namespace SandS.Controllers
         private readonly IUnityOfWork _unityofwork;
         private readonly UserManager<ApplicationUser> _signInManager;
 
-        public CategoryController(IUnityOfWork unityofwork,UserManager<ApplicationUser> signInManager) : base(unityofwork, signInManager)
+        public CategoryController(IUnityOfWork unityofwork, UserManager<ApplicationUser> signInManager) : base(unityofwork, signInManager)
         {
             _unityofwork = unityofwork;
             _signInManager = signInManager;
@@ -34,32 +34,10 @@ namespace SandS.Controllers
             obj ??= new List<OrderHeader>();
             return View(obj);
         }
-        public ActionResult Edit(string ordcode) 
+        public ActionResult Edit(string ordcode)
         {
             return View(_unityofwork.OrderDetail.GetAll().Where(x => x.OrdHeaderCode == ordcode));
         }
-
-        public ActionResult Completed(string ordcode)
-        {
-            //var complete = _unityofwork.OrderHeader.Include("OrderDetail").ToList();
-            var model = _unityofwork.OrderHeader.GetFirstOrDefault(u => u.OrdHeaderCode == ordcode);
-            model.isCompleted = true;
-
-            //foreach (var item in model.OrderLine)
-            //{
-            //    _unityofwork.AuditTray.Add(new AuditTray
-            //    {
-            //        OrdHeaderCode = item.OrdHeaderCode,
-            //        Price = item.Price,
-            //        Name = model.Name,
-            //        Items = item.Items
-            //    });
-            //}
-            _unityofwork.Save();
-            return RedirectToAction("Index");
-
-        }
-
         // GET: HomeController1/Edit/5
         public ActionResult GenerateReceipt(string customerinfo, string selectedlines)
         {
@@ -81,7 +59,7 @@ namespace SandS.Controllers
                     OrderLine = new()
                 };
                 _unityofwork.OrderHeader.Add(header);
-                
+
                 for (int i = 0; i < products.Count; i++)
                 {
                     _unityofwork.OrderDetail.Add(new OrderDetail()
@@ -111,10 +89,46 @@ namespace SandS.Controllers
             }
             catch (Exception ex)
             {
-              //  _logger.LogError(ex.Message);
+                //  _logger.LogError(ex.Message);
                 throw;
             }
+        }
+        public ActionResult UpdateStatuestoComplete(string ordHeaderCode)
+        {
+            try
+            {
+                var HeaderCodeList = JsonConvert.DeserializeObject<List<string>>(ordHeaderCode);
+                var OrderList = _unityofwork.OrderHeader.GetAll("OrderLine");
+                var GetAllOrders = new OrderHeader();
 
+                int count = 1;
+                var innerJoin =
+                    from oHeader in OrderList
+                    join selectedOrder in HeaderCodeList
+                    on oHeader.OrdHeaderCode equals selectedOrder
+                    select oHeader;
+
+                foreach (var _orderHeader in innerJoin)
+                {
+                    _orderHeader.isCompleted = true;
+
+                    foreach (var orderDetail in _orderHeader.OrderLine)
+                    {
+                        orderDetail.isCompleted = true;
+                    }
+                    _unityofwork.OrderHeader.Update(_orderHeader);
+                    count++;
+                }
+                _unityofwork.Save();
+
+                Notify("Successful moved orders", "Moving Item Successed", type: NotificationType.info);
+                return RedirectToAction("AdminDashboard", "Home", new { area = "" });
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+           
         }
         public ActionResult Striple(string customerinfo, string selectedlines)
         {
@@ -168,7 +182,7 @@ namespace SandS.Controllers
                 products.FirstOrDefault().SessionId = session.Id;
                 products.FirstOrDefault().PaymentIntentId = session.PaymentIntentId;
 
-                Response.Headers.Add("Location",session.Url);
+                Response.Headers.Add("Location", session.Url);
                 return new StatusCodeResult(303);
             }
             catch (Exception ex)
@@ -176,10 +190,10 @@ namespace SandS.Controllers
                 //  _logger.LogError(ex.Message);
                 throw;
             }
-           //  return View(receipt);
+            //  return View(receipt);
         }
 
-        public ActionResult OrderConfirmation(int id) 
+        public ActionResult OrderConfirmation(int id)
         {
 
             var product = _unityofwork.Product.GetFirstOrDefault(x => x.ProductID == id);

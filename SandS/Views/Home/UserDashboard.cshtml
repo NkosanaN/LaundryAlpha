@@ -8,6 +8,12 @@
 <h1 class="bg-black">Testing dashboard</h1>
 
 <style>
+    #mySearch {
+        width: 100%;
+        font-size: 18px;
+        padding: 11px;
+        border: 1px solid #ddd;
+    }
 
     /* Style the tab */
     .tab {
@@ -15,31 +21,32 @@
         border: 1px solid #ccc;
         background-color: #f1f1f1;
         width: 10%;
-        height: 450px;
+        height: 500px;
     }
 
-        /* Style the buttons that are used to open the tab content */
-        .tab button {
-            display: block;
-            background-color: inherit;
-            color: black;
-            padding: 22px 16px;
-            width: 100%;
-            border: none;
-            outline: none;
-            text-align: left;
-            cursor: pointer;
-        }
+    /* Style the buttons that are used to open the tab content */
+    .tab button {
+        display: block;
+        background-color: inherit;
+        color: black;
+        padding: 22px 16px;
+        width: 100%;
+        border: none;
+        outline: none;
+        text-align: left;
+        cursor: pointer;
+        transition: 0.3s;
+    }
 
-            /* Change background color of buttons on hover */
-            .tab button:hover {
-                background-color: #ddd;
-            }
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+        background-color: #ddd;
+    }
 
-            /* Create an active/current "tab button" class */
-            .tab button.active {
-                background-color: #ccc;
-            }
+    /* Create an active/current "tab button" class */
+    .tab button.active {
+        background-color: #ccc;
+    }
 
     /* Style the tab content */
     .tabcontent {
@@ -48,36 +55,37 @@
         border: 1px solid #ccc;
         width: 70%;
         border-left: none;
-        height: 450px;
+        height: 500px;
         display: none;
     }
 
 </style>
 <div class="container-fluid">
     <div class="tab">
-        <h2>Hello @UserManager.GetUserAsync(User).Result.FirstName</h2>
+        <h5 class="mt-3 p-1"><span class="text-center">Hello @UserManager.GetUserAsync(User).Result.FirstName</span></h5>
 
         <input type="text" id="mySearch" onkeyup="myFunction()" placeholder="Search.." title="Type in a category">
 
         <div>
-            <button class="tablinks" onmouseover="openMenu(event, 'Home')"><i class="fa fa-fw fa-wrench tablink"></i>Home</button>
-            <button class="tablinks" onmouseover="openMenu(event, 'Progres')">Progres</button>
-            <button class="tablinks" onmouseover="openMenu(event, 'viewloyaltypoint')">View loyalty Point</button>
-            <button class="tablinks" onclick="Logout()">Logout</button>
+            <button class="tablinks" onclick="openMenu(event, 'Home')"><i class="fa fa-fw fa-wrench tablink"></i>Home</button>
+            <button class="tablinks" onclick="openMenu(event, 'basket')">Add to Basket</button>
+ @*           <button class="tablinks" onclick="openMenu(event, 'pdf')"><i class="fa fa-file-arrow-down"></i>Download Slip</button>*@
+            <button class="tablinks" onclick="Logout()"><i class="fa fa-right-from-bracket"></i>Logout</button>
         </div>
     </div>
     <div id="Home" class="tabcontent">
         @if (OrderNr == 0)
         {
 
-                  @*  <h5 class="card-title">Nothing on Basket</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-*@                    @await Component.InvokeAsync("Test","Admin Create Order")
-@*
-            <div class="container mt-4">
-                <h4 class="my-3 text-center">Nothing on Basket</h4>
-            </div>*@
+            @*  <h5 class="card-title">Nothing on Basket</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+
+        <div class="container mt-4">
+        <h4 class="my-3 text-center">Nothing on Basket</h4>
+        </div>*@
+            <h4 class="my-3 text-center">Add stuff to basket</h4>
+            @await Component.InvokeAsync("Test","Admin Create Order")
         }
         else
         {
@@ -104,16 +112,132 @@
 
             </div>
 
-            <table class="table " id="tblUserLaundry" width="100%">
-                <thead class="btn-secondary">
-                    <tr>
-                        <th>Name</th>
-                        <th>Surname</th>
-                        <th>Item Number</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-            </table>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card" style="width: 100%;">
+                            <div class="card-header">
+                                <span id="OrdercodeId">Ref Number : </span>
+                                <span id="total"></span>
+                            </div>
+                            <div class="card-body">
+                                <table class="table p-0 " id="tblUserLaundry" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Items</th>
+                                            <th>Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="d-grid">
+                            <button type="button" class="btn btn-secondary" onclick="downLoadPdf()"><i class="fa-solid fa-file-pdf"></i>Download Slip</button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card" style="width: 100%;">
+                            <div class="card-header">
+                                <span id="OrdercodeId">Loyalty Points</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-outline-secondary btnLoyalty_1 ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-outline-secondary btnLoyalty_2 ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-outline-secondary btnLoyalty_3 ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-outline-secondary btnLoyalty_4 ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-outline-secondary btnLoyalty_5 ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-outline-secondary btnLoyalty_6 ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row mb-0">
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-outline-secondary btnLoyalty_7 ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-outline-secondary btnLoyalty_8 ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-outline-secondary btnLoyalty_9 ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-outline-secondary btnLoyalty_10 ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-outline-secondary btnLoyalty_11 ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-outline-secondary btnLoyalty_12 ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             @*        <div id="main">
         <p id="content">Step Number 1</p>
@@ -123,22 +247,20 @@
         </div>*@
         }
     </div>
-    <div id="Progres" class="tabcontent">
-@*        <h3>Paris</h3>
-        <p>Paris is the capital of France.</p>*@
+    <div id="basket" class="tabcontent">
+        @await Component.InvokeAsync("Test","Admin Create Order")
     </div>
 
-    <div id="viewloyaltypoint" class="tabcontent">
- @*       <h3>Tokyo</h3>
-        <p>Tokyo is the capital of Japan.</p>*@
+    <div id="pdf" class="tabcontent">
+
     </div>
 </div>
 
 <partial name="_ModalConfirm" view-data="ViewData" />
 @section Scripts {
-        <script src="~/js/userdashboard.js" asp-append-version="true"></script>
+    <script src="~/js/userdashboard.js" asp-append-version="true"></script>
     <script src="~/js/base.js" type="text/javascript"></script>
-    <script src="~/js/admin.js" type="text/javascript" ></script>
+    <script src="~/js/admin.js" type="text/javascript"></script>
     <script src="~/js/customer.js" type="text/javascript"></script>
 
     <script type="text/javascript">

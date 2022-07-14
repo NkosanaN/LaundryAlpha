@@ -48,6 +48,7 @@ namespace S_and_S.Controllers
         }
         public IActionResult AdminDashboard()
         {
+            getOrderList();
             //return RedirectToAction("Index", "Category", new { area = "Admin" });
             return View();
         }

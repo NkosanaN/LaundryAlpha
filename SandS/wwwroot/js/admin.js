@@ -12,22 +12,20 @@ $('#isCollection').on('change', function () {
         $('.Address').removeClass('d-none');
 });
 
-$('#adminviewsummary').on('click', function () {
-    AdmincreateSummaryTable(AdmingetSelectedRows()); 
-
-})
 $('#adminModalToggle').on('show.bs.modal', function (e) {
 
-    $('#AdminformBackdrop').modal('hide');
-    $('#staticBackdrop').modal('hide');
+    AdmincreateSummaryTable(AdmingetSelectedRows());
+    $('.close').click(); 
+    $("[data-dismiss=modal]").trigger({ type: "click" });
+    //   data-bs-target="#adminModalToggle"
+    //$('#AdminformBackdrop').modal('hide');
+    //$('#staticBackdrop').modal('hide');
 
     $('#summaryTable > tbody > tr .name').html($('#inputName').val());
     $('#summaryTable > tbody > tr .surname').html($('#Surname').val());
     $('#summaryTable > tbody > tr .email').html($('#inputEmail').val());
     $('#summaryTable > tbody > tr .address').html($('#inputAddress').val());
     $('#summaryTable > tbody > tr .phoneNr').html($('#MobilePhoneNumber').val());
-
-    AdmincreateSummaryTable(AdmingetSelectedRows());
 });
 
 function AdmincreateSummaryTable(data) {
@@ -60,7 +58,10 @@ function AdmingetSelectedRows() {
         return false;
     }
   //  rows = rows.length + 1;
+   // $('#adminModalToggle').on('show.bs.modal
 
+
+    
     $.each(rows, function () {
         var obj = {};
         let cRow = $(this).closest("tr");

@@ -1,6 +1,8 @@
 ﻿var dttable
 $(document).ready(function () {
-    loadData();
+    GetCustomerInformation();
+    getLoyaltPoint();
+
 })
 
 const previousBtn = document.getElementById("previousBtn");
@@ -44,6 +46,48 @@ let currentStep = 1;
 //finishBtn.addEventListener('click', () => {
 //    location.reload();
 //})
+function downLoadPdf()
+{
+    let u = '/customers/debtor/InvoicePdf';
+    window.location.href = u;
+}
+
+
+function GetCustomerInformation() {
+    var html = '';
+    var total = 0;
+    $.ajax({
+        url: '/home/getuserdata',
+        method: 'GET',
+        data: {},
+        success: function (r) {
+            $.each(r, function (i, items) {
+             
+                html += "<tr><td>" + items.orderLine[i]["items"] +
+                    "</td><td>" + items.orderLine[i]["price"] +
+                    "</td></tr>";
+                total += parseFloat(items.orderLine[i]["price"]);
+            });
+            $('#total').text("Total  " + total.toFixed(2))
+            $('#tblUserLaundry').append(html);
+        }
+    });
+}
+
+function checkDataInTbl() {
+    var table = $('#tblLaundry').DataTable();
+
+    if (!table.data().any()) {
+        alert('No Row')
+    }
+}
+
+function getLoyaltPoint() {
+    let i = 0;
+    for (i; i <= 5; i++) {
+        $('.btnLoyalty_' + i).addClass('active');
+    }
+}
 
 
 function loadData() {
@@ -55,8 +99,8 @@ function loadData() {
 
             //{ "data": "name", "width": "5%" },
             //{ "data": "surname", "width": "5%" },
-            { "data": "itemNr", "width": "5%" },
-            { "data": "totalLine", "width": "5%" },
+            { "data": "orderLine[0].items" },
+            { "data": "orderLine[0].price" },
         ],
         "paging": false,
         "ordering": false,

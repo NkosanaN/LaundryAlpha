@@ -106,7 +106,6 @@ namespace S_and_S.Controllers
                     }
                     return PartialView("_UserRegistrationPartial", registrationModel);
                 }
-
                 AddErrorsToModelState(result);
             }
             ViewBag.LoginInValid = registrationModel.RegistrationInValid;
