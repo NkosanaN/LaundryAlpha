@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Model;
 using Newtonsoft.Json;
 using NToastNotify;
+using Rotativa.AspNetCore;
 using Service.Repository.IRepository;
 using System.Security.Claims;
 
@@ -77,5 +78,52 @@ namespace SandS.Helpers
             var value = configuration["NotificationProvider"];
             return value;
         }
+        public async Task<ViewAsPdf> InvoicePdf(IEnumerable<OrderHeader> model)
+        {
+            return await Task.FromResult(new ViewAsPdf(model)
+            {
+                FileName = "Receipt.pdf",
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
+                PageSize = Rotativa.AspNetCore.Options.Size.A4,
+                CustomSwitches =
+                          "--footer-center \" Run Date : " +
+                          DateTime.Now.Date.ToString("yyyy/MM/dd") + " Page: [page]/[toPage] \"" +
+                          " --footer-line --footer-font-size \"12\" --footer-spacing 1 --footer-font-name \" Segoe UI\""
+            });
+        }
+
+        //public ActionResult InvoicePdf(IEnumerable<OrderHeader> model)
+        //{
+        //    //GenerateReceiptViewModel receipt = new();
+        //    try
+        //    {
+
+        //        //string code = RandomString.GenerateOrderCode(5);
+
+
+        //        var potrait = new ViewAsPdf(model)
+        //        {
+        //            FileName = "Receipt.pdf",
+        //            PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
+        //            PageSize = Rotativa.AspNetCore.Options.Size.A4,
+
+        //            CustomSwitches =
+        //            "--footer-center \" Created Date : " +
+        //            DateTime.Now.Date.ToString("yyyy/MM/dd") + " Page: [page]/[toPage] \"" +
+        //            " --footer-line --footer-font-size \"12\" --footer-spacing 1 --footer-font-name \" Segoe UI\""
+        //        };
+        //        return potrait;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //  _logger.LogError(ex.Message);
+        //        throw;
+        //    }
+
+        //}
+
+
+
+
     }
 }

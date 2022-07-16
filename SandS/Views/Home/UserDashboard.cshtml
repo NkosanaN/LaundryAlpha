@@ -62,7 +62,7 @@
 </style>
 <div class="container-fluid pl-3">
     <div class="tab">
-        <h5 class="mt-3 p-1"><span class="text-center">Hello @UserManager.GetUserAsync(User).Result.FirstName</span></h5>
+        <h5 class="mt-3 p-1"><span class="text-center">Hello @UserManager.GetUserAsync(User).Result.FirstName </span></h5>
 
         <input type="text" id="mySearch" onkeyup="myFunction()" placeholder="Search.." title="Type in a category">
 
@@ -119,17 +119,14 @@
                     <div class="col-md-6">
                         <div class="card" style="width: 100%;">
                             <div class="card-header">
-                                <span id="OrdercodeId">Ref Number : </span>
-                                <span id="total"></span>
+                                <span id="total" class="text-center"></span>
                             </div>
                             <div class="card-body">
                                 <table class="table p-0 " id="tblUserLaundry" style="width: 100%;">
                                     <thead>
                                         <tr>
-                                            @*       <th></th>*@
                                             <th>Items</th>
                                             <th>Price</th>
-                                            <th>Total</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>

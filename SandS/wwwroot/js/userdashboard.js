@@ -46,9 +46,12 @@ let currentStep = 1;
 //finishBtn.addEventListener('click', () => {
 //    location.reload();
 //})
-function downLoadPdf()
-{
-    let u = '/customers/debtor/InvoicePdf';
+function downLoadPdf() {
+    //let u = '/customers/debtor/InvoicePdf';
+
+    let u = '/Home/DownLoadInvoice' 
+
+
     window.location.href = u;
 }
 
@@ -61,15 +64,16 @@ function GetCustomerInformation() {
         method: 'GET',
         data: {},
         success: function (r) {
-            $.each(r, function (i, items) {
-             
-                html += "<tr><td>" + items.orderLine[i]["items"] +
-                        "</td><td>" + items.orderLine[i]["price"] +
+            $.each(r, function (i) {
+                $.each(r[i].orderLine, function (k, v) {
+                    html += "<tr><td>" + v["items"] +
+                        "</td><td>" + v["price"] +
                         "</td></tr>";
-                total += parseFloat(items.orderLine[i]["price"]);
+                    total += parseFloat(v["price"]);
+                });
+                $('#tblUserLaundry').append(html);
+                $('#total').text("Total  " + total.toFixed(2));
             });
-            $('#total').text("Total  " + total.toFixed(2))
-            $('#tblUserLaundry').append(html);
         }
     });
 }

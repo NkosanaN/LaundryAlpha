@@ -1,11 +1,23 @@
-﻿@using SandS.Models
+﻿@using Model
+@using SandS.Models
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<Model.ApplicationUser> UserManager
-@model GenerateReceiptViewModel
+@model dynamic;
+@using System.Reflection
 @{
     Layout = null;
-    string receiptNumber  = (string)ViewBag.ReceiptNr;
+    var m = Model ;
+    
+    //var properties = Model[0].GetType().GetProperties();
+    //var t = properties;
 }
+<style>
+    .row1 > div {
+        display: inline-block;
+    }
+</style>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,8 +28,9 @@
 </head>
 <body>
     <div class="invoice-title">
-        Receipt : receiptNumber;
+        <span class="text-center">S&S &nbsp; Laundry</span>
     </div>
+
 
 
     <div class="invoice-head clearfix">
@@ -36,7 +49,8 @@
 
                 <td class="invoice-details">
                     Invoice no: 123456<br />
-                    Date: @DateTime.Now.ToShortDateString()<br />
+                    Invoice Data:  @DateTime.Now.Date.ToShortDateString()<br />
+                    Payment Due:   @DateTime.Now.Date.ToShortDateString()<br />
                     @*Due date: @Model.DueDate.ToShortDateString()*@
                 </td>
 
@@ -45,64 +59,129 @@
 
     </div>
 
-    @*<table class="SummaryTable clearfix">
-        <tr>
-            <th style="text-align:left">Product Name</th>
-            <th>Price</th>
-        </tr>
-        @foreach (var item in Model.product)
-        {
-            <tr>
-                <td>@item.ProductName</td>
-                <td class="numeric-cell">@item.ListPrice.ToString("N2")</td>
-            </tr>
-        }
-
-        <tr style="background-color: #f1f1c1;">
-            <td class="col"> Total: </td>
-            <td class="numeric-cell">@Model.product.Sum(x=>x.ListPrice).ToString("N2")</td>
-        </tr>
-    </table>*@
-
-    <table>
+    <table class="SummaryTable">
         <thead>
-            <tr>Your Current Loyality Points</tr>
+            <tr>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+            </tr>
         </thead>
-        <tbody>
-            @for (int i = 0; i < 1; i++)
+        <tbody style="background-color:whitesmoke">
+            @foreach (OrderDetail item in ViewBag.oLine)
             {
-                <tr>
-                    <td class=clearfix>
-                        <button type="button" class="btn btn-outline-secondary ">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                            </svg>
-                        </button>
-                    </td>
+@*               if(item.GetType() == typeof(OrderHeader))
+                {
+                    var oLine = item as OrderHeader;
+                    <tr>
+                        @oLine.FirstName
+                    </tr>
+                }*@
+              <tr>
+                    <td>@item.Items</td>
+                    <td class="numeric-cell">1</td>
+                    <td class="numeric-cell">@item.Price</td>
                 </tr>
-
-                                <tr>
-                    <td class=clearfix>
-                        <button type="button" class="btn btn-outline-secondary ">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                            </svg>
-                        </button>
-                    </td>
-                </tr>
-
             }
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="1"></th>
+                <th>Total</th>
+               @* <th class="numeric-cell">@Model.TotalLine.ToString("N2")</th>*@
+            </tr>
+        </tfoot>
+
     </table>
 
-    <h5>Terms and Condition</h5>
-    <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-    </ul>
+    <hr />
+    <article style="background-color:whitesmoke">
+        <h3 style="text-align:center">Loyaty Point</h3>
+        <div class="col-md-6 row" style="text-align:center">
+            <button type="button" class="btn btn-outline-secondary btnLoyalty_1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+            </button>
+            &nbsp;
 
+            <button type="button" class="btn btn-outline-secondary btnLoyalty_2 ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+            </button>
+            &nbsp;
+
+            <button type="button" class="btn btn-outline-secondary btnLoyalty_3 ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+            </button>
+            &nbsp;
+
+            <button type="button" class="btn btn-outline-secondary btnLoyalty_4 ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+            </button>
+            &nbsp;
+
+            <button type="button" class="btn btn-outline-secondary btnLoyalty_5 ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+            </button>
+
+        </div>
+        <div class="col-md-6 row" style="text-align:center">
+            <button type="button" class="btn btn-outline-secondary btnLoyalty_6">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+            </button>
+            &nbsp;
+
+            <button type="button" class="btn btn-outline-secondary btnLoyalty_7 ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+            </button>
+            &nbsp;
+
+            <button type="button" class="btn btn-outline-secondary btnLoyalty_8 ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+            </button>
+            &nbsp;
+
+            <button type="button" class="btn btn-outline-secondary btnLoyalty_9 ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+            </button>
+            &nbsp;
+
+            <button type="button" class="btn btn-outline-secondary btnLoyalty_10 ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+            </button>
+
+        </div>
+    </article>
+
+    <br />
+
+    <div>
+        <h3>Terms and Condition</h3>
+        <ul>
+            <li>Not applicable for Dry cleaning services</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+    </div>
 </body>
 </html>
 

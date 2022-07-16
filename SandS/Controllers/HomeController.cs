@@ -55,11 +55,18 @@ namespace S_and_S.Controllers
         public IEnumerable<OrderHeader> getOrderList() 
         {
             var getUserOrders = _unityofwork.OrderHeader.GetAll("OrderLine")
-                               .Where(x => x.Email.ToLower() == Email.ToLower());
+                               .Where(x => (x.Email.ToLower() == Email.ToLower()) && (x.isCompleted == false));
+            
+            //ControllerContext.HttpContext.Session.Set("customerOrder", getUserOrders) ;
             ViewBag.NumberOfOrder = getUserOrders.Count();
             return getUserOrders;
         }
-
+        public async Task<IActionResult> DownLoadInvoice() 
+        {
+            //return  ViewComponent("GenerateReceipt", getOrderList());// InvoicePdf(getOrderList());
+            var pdf = await InvoicePdf(getOrderList());
+            return pdf;
+        }
         public IActionResult getUserData() 
         {
             return Json(getOrderList());
